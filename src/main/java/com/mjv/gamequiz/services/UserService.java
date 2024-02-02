@@ -21,6 +21,13 @@ public class UserService {
     private final UserRepository userRepository;
 
     public UserDTO findUserById(Long id) {
+        if (Objects.nonNull(id)) {
+            throw new IllegalArgumentException("UserDTO não pode ser nulo.");
+        }
+        if (!userRepository.existsById(id)) {
+            throw new UserNotFoundException("Usuário com o ID " + id + " não encontrado.");
+        }
+
         return userRepository.findUserById(id)
                 .map(userMapper::toDTO)
                 .orElseThrow(() -> new UserNotFoundException("Erro ao tentar procurar User"));
