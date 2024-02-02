@@ -1,4 +1,4 @@
 package com.mjv.gamequiz.repositories;
 
-public class QuestionRepository {
+public interface QuestionRepository {
 }
