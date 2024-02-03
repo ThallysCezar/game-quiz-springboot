@@ -2,7 +2,6 @@ package com.mjv.gamequiz.builders;
 
 import com.mjv.gamequiz.domains.QuestionAlternative;
 import com.mjv.gamequiz.dtos.QuestionAlternativeDTO;
-import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 

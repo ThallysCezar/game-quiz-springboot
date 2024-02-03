@@ -4,16 +4,19 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+import java.io.Serializable;
 
 @Getter
 @Setter
 @AllArgsConstructor
-@NoArgsConstructor
 @Entity
 @Table(name="t_user")
-public class User {
+public class User implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -44,5 +47,9 @@ public class User {
     @Column(length = 200, nullable = false)
     @Size(min = 4, message = "A senha deve ter pelo menos 4 caracteres.")
     private String password;
+
+    @OneToOne(mappedBy = "user")
+    @JdbcTypeCode(SqlTypes.JSON)
+    private Player player;
 
 }

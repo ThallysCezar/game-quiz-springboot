@@ -8,6 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Getter
@@ -16,10 +17,11 @@ import java.util.List;
 @NoArgsConstructor
 @Entity
 @Table(name = "t_question")
-public class Question {
+public class Question implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @NotBlank
@@ -38,6 +40,8 @@ public class Question {
     private String response;
 
     private Long correctQuestionAlternativeID;
+
+    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
     private List<QuestionAlternative> questionAlternativeArrayList;
 
 }

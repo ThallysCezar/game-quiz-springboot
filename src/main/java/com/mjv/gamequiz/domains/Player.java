@@ -7,6 +7,10 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
+
+import java.io.Serializable;
 
 @Getter
 @Setter
@@ -14,7 +18,8 @@ import lombok.Setter;
 @NoArgsConstructor
 @Entity
 @Table(name = "t_player")
-public class Player {
+public class Player implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,6 +39,9 @@ public class Player {
     @Column(length = 200, nullable = false)
     private String theme;
 
+    @JdbcTypeCode(SqlTypes.JSON)
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "fk_user", referencedColumnName = "id")
     private User user;
 
 }
