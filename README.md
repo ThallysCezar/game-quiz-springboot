@@ -6,7 +6,7 @@ Bem-vindo ao GameQuiz! Este é um projeto de quiz de perguntas e respostas desen
 
 ## Stack utilizada
 
-**Back-end:** Java, Spring Boot, H2 Database (temporariamente, será migrado para PostgreSQL)
+**Back-end:** Java, Spring Boot e PostgreSQL como banco de dados.
 
 
 ## Configuração
