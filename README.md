@@ -174,13 +174,13 @@ Bem-vindo ao GameQuiz! Este é um projeto de quiz de perguntas e respostas desen
 ```
 
 - UserController
-#### Recupera todos os usuários disponíveis.
+### Recupera todos os usuários disponíveis.
 
 ```http
   GET /users
 ```
 
-#### Recupera um usuário específico com base no ID fornecido.
+### Recupera um usuário específico com base no ID fornecido.
 
 ```http
   GET /users/{id}
@@ -190,7 +190,7 @@ Bem-vindo ao GameQuiz! Este é um projeto de quiz de perguntas e respostas desen
 | :---------- | :--------- | :------------------------------------------ |
 | `id`      | `Long` | **Obrigatório**. O ID do user que você quer |
 
-#### Recupera um usuário específico com base no Email e Password fornecidos.
+### Recupera um usuário específico com base no Email e Password fornecidos.
 
 ```http
   GET /users/{email}/{password}
@@ -201,7 +201,7 @@ Bem-vindo ao GameQuiz! Este é um projeto de quiz de perguntas e respostas desen
 | `email`      | `String` | **Obrigatório**. O emaill do user que você quer |
 | `password`      | `String` | **Obrigatório**. O password do user que você quer |
 
-#### Cria um novo usuário. JSON exemplo:
+### Cria um novo usuário. JSON exemplo:
 
 ```http
   POST /users
@@ -216,6 +216,17 @@ Bem-vindo ao GameQuiz! Este é um projeto de quiz de perguntas e respostas desen
   }
 ```
 
+### Documentação com Swagger
+A documentação completa da API pode ser encontrada no Swagger também. Para acessar a documentação, siga as etapas abaixo:
+
+1. Certifique-se de que o projeto esteja em execução.
+
+2. Abra um navegador da web e vá para a seguinte URL:
+
+   [Swagger API Documentation](http://localhost:8080/swagger-ui/index.html)
+
+3. Isso abrirá a interface do Swagger, onde você pode explorar e testar os endpoints da API.
+4. Use os exemplos com JSON com que já tem disponível aqui, ficará mais fácil para testar.
 
 ## Contexto do Projeto
 
