@@ -10,5 +10,6 @@ public interface QuestionAlternativeRepository extends JpaRepository<QuestionAlt
 
     List<QuestionAlternative> findByQuestionId(Long questionId);
     Optional<QuestionAlternative> findQuestionById(Long id);
+
     Optional<QuestionAlternative> findByQuestionIdAndItsCorrect(Long id, Boolean itsCorrect);
 }

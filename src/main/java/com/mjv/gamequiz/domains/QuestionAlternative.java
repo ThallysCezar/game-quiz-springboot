@@ -1,6 +1,5 @@
 package com.mjv.gamequiz.domains;
 
-import com.mjv.gamequiz.dtos.QuestionAlternativeDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -10,7 +9,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.ArrayList;
 
 @Getter
 @Setter

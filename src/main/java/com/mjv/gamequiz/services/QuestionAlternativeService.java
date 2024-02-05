@@ -9,6 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -28,24 +29,13 @@ public class QuestionAlternativeService {
         return questionAlternativeMapper.toListDTO(questions);
     }
 
-    public QuestionAlternativeDTO findById(Long id){
+    public QuestionAlternativeDTO findById(Long id) {
         if (id != null && questionAlternativeRepository.existsById(id)) {
             return questionAlternativeRepository.findById(id)
                     .map(questionAlternativeMapper::toDTO)
                     .orElse(null);
         } else {
             throw new QuestionAlternativeException("ID inválido ou não encontrado");
-        }
-    }
-
-    public List<QuestionAlternativeDTO> findByIds(List<Long> ids) {
-        try {
-            List<QuestionAlternative> questionAlternatives = questionAlternativeRepository.findAllById(ids);
-            return questionAlternatives.stream()
-                    .map(questionAlternativeMapper::toDTO)
-                    .collect(Collectors.toList());
-        } catch (QuestionAlternativeException exQuestionAlternative) {
-            throw new QuestionAlternativeException("Ids inválidos ou não encontrados");
         }
     }
 
@@ -69,18 +59,12 @@ public class QuestionAlternativeService {
         }
     }
 
-    public List<QuestionAlternativeDTO> findByQuestionId(Long questionId){
+    public List<QuestionAlternativeDTO> findByQuestionId(Long questionId) {
         List<QuestionAlternative> questionAlternativeList = questionAlternativeRepository.findByQuestionId(questionId);
         return questionAlternativeList.stream()
                 .map(questionAlternativeMapper::toDTO)
                 .collect(Collectors.toList());
     }
 
-    public QuestionAlternativeDTO findByQuestionIdAndItsCorrect(Long questionId, Boolean alternativeStatus){
-        QuestionAlternative questionAlternative = questionAlternativeRepository
-                .findByQuestionIdAndItsCorrect(questionId, alternativeStatus)
-                .orElseThrow(() -> new QuestionAlternativeException("QuestionAlternative Id inválido ou não encontrado"));
-        return questionAlternativeMapper.toDTO(questionAlternative);
-    }
 }
 

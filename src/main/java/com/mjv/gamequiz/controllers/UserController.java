@@ -16,22 +16,23 @@ public class UserController {
     private final UserService userService;
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserDTO> findUserById(@PathVariable  Long id){
+    public ResponseEntity<UserDTO> findUserById(@PathVariable Long id) {
         return ResponseEntity.ok().body(userService.findUserById(id));
     }
 
-    @PostMapping
-    public ResponseEntity<UserDTO> save(@RequestBody UserDTO dto){
-        return ResponseEntity.ok().body(userService.save(dto));
-    }
-
     @GetMapping
-    public ResponseEntity<List<UserDTO>> findAll(){
+    public ResponseEntity<List<UserDTO>> findAll() {
         return ResponseEntity.ok().body(userService.findAll());
     }
 
     @GetMapping("/{email}/{password}")
-    public ResponseEntity<UserDTO> findByEmailPassword(String email, String password) {
+    public ResponseEntity<UserDTO> findByEmailPassword(@PathVariable String email, @PathVariable String password) {
         return ResponseEntity.ok().body(userService.findByEmailAndPassword(email, password));
     }
+
+    @PostMapping
+    public ResponseEntity<UserDTO> save(@RequestBody UserDTO dto) {
+        return ResponseEntity.ok().body(userService.save(dto));
+    }
+
 }

@@ -21,7 +21,7 @@ public class UserService {
     private final UserRepository userRepository;
 
     public UserDTO findUserById(Long id) {
-        if (Objects.nonNull(id)) {
+        if (Objects.isNull(id)) {
             throw new IllegalArgumentException("UserDTO não pode ser nulo.");
         }
         if (!userRepository.existsById(id)) {
@@ -34,7 +34,7 @@ public class UserService {
     }
 
     public UserDTO save(UserDTO userDTO) {
-        if (Objects.nonNull(userDTO)) {
+        if (Objects.isNull(userDTO)) {
             throw new IllegalArgumentException("UserDTO não pode ser nulo.");
         }
         return userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));

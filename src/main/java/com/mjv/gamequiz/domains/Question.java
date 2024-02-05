@@ -35,7 +35,6 @@ public class Question implements Serializable {
     private String question;
 
     @NotBlank
-    @NotNull
     @Column(length = 200, nullable = false)
     private String response;
 
