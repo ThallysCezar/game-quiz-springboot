@@ -15,7 +15,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "t_question-alternative")
+@Table(name = "t_question_alternative")
 public class QuestionAlternative implements Serializable {
     private static final long serialVersionUID = 1L;
 
