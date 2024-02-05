@@ -4,11 +4,14 @@ import com.mjv.gamequiz.builders.QuestionMapper;
 import com.mjv.gamequiz.domains.Question;
 import com.mjv.gamequiz.dtos.QuestionDTO;
 import com.mjv.gamequiz.exceptions.QuestionException;
+import com.mjv.gamequiz.exceptions.UserException;
 import com.mjv.gamequiz.repositories.QuestionRepository;
 import lombok.AllArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -18,25 +21,32 @@ public class QuestionService {
     private final QuestionMapper questionMapper;
 
     public List<QuestionDTO> findAll() {
-        return questionMapper.toListDTO(questionRepository.findAll());
+        List<Question> questions = questionRepository.findAll();
+        if (questions.isEmpty()) {
+            throw new QuestionException("Nenhuma pergunta encontrada.");
+        }
+        return questionMapper.toListDTO(questions);
     }
 
     public QuestionDTO findById(Long id) {
-        if (id != null && questionRepository.existsById(id)) {
-            return questionRepository.findById(id)
-                    .map(questionMapper::toDTO)
-                    .orElse(null);
-        } else {
-            throw new QuestionException("Ocorreu um erro ao tentar recuperar a QuestionDTO na consulta findById");
+        if (Objects.isNull(id)) {
+            throw new IllegalArgumentException("O ID não pode ser nulo, tente novamente.");
         }
+        if (!questionRepository.existsById(id)) {
+            throw new QuestionException(String.format("Pergunta não encontrado com o id '%s'.", id));
+        }
+
+        return questionRepository.findById(id)
+                .map(questionMapper::toDTO)
+                .orElseThrow(() -> new QuestionException("Erro ao tentar procurar uma questão"));
     }
 
     public QuestionDTO save(QuestionDTO questionDTO) {
         try {
-            Question questionEntity = questionRepository.save(questionMapper.toEntity(questionDTO));
-            return questionMapper.toDTO(questionEntity);
+            return questionMapper.toDTO(questionRepository.save(questionMapper.toEntity(questionDTO)));
         } catch (QuestionException exQuestion) {
-            throw new QuestionException("Ocorreu um erro ao tentar salvar a QuestionDTO");
+            throw new QuestionException(String.format("Ocorreu um erro ao tentar salvar a pergunta '%s'.", questionDTO));
         }
     }
+
 }

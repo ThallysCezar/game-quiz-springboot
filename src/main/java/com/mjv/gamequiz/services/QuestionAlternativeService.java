@@ -9,7 +9,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,21 +30,37 @@ public class QuestionAlternativeService {
     }
 
     public QuestionAlternativeDTO findById(Long id) {
-        if (id != null && questionAlternativeRepository.existsById(id)) {
-            return questionAlternativeRepository.findById(id)
-                    .map(questionAlternativeMapper::toDTO)
-                    .orElse(null);
-        } else {
-            throw new QuestionAlternativeException("ID inválido ou não encontrado");
+        if (Objects.isNull(id)) {
+            throw new IllegalArgumentException("O ID não pode ser nulo, tente novamente.");
         }
+        if (questionAlternativeRepository.existsById(id)) {
+            throw new QuestionAlternativeException(String.format("Alternativa não encontrada com o id '%s'.", id));
+
+        }
+        return questionAlternativeRepository.findById(id)
+                .map(questionAlternativeMapper::toDTO)
+                .orElseThrow(() -> new QuestionAlternativeException("Erro ao tentar procurar uma alternativa"));
     }
 
-    public QuestionAlternativeDTO save(QuestionAlternative questionAlternative) {
+    public List<QuestionAlternativeDTO> findByQuestionId(Long questionId) {
+        List<QuestionAlternative> questionAlternativeList = questionAlternativeRepository.findByQuestionId(questionId);
+        if (Objects.isNull(questionAlternativeList)) {
+            throw new IllegalArgumentException("O ID da questão não pode ser nulo, tente novamente.");
+        }
+        if (questionAlternativeRepository.existsById(questionId)) {
+            throw new QuestionAlternativeException(String.format("Questão não encontrada com o id '%s'.", questionId));
+
+        }
+        return questionAlternativeList.stream()
+                .map(questionAlternativeMapper::toDTO)
+                .collect(Collectors.toList());
+    }
+
+    public QuestionAlternativeDTO save(QuestionAlternativeDTO questionAlternativeDTO) {
         try {
-            QuestionAlternative savedAlternative = questionAlternativeRepository.save(questionAlternative);
-            return questionAlternativeMapper.toDTO(savedAlternative);
+            return questionAlternativeMapper.toDTO(questionAlternativeRepository.save(questionAlternativeMapper.toEntity(questionAlternativeDTO)));
         } catch (QuestionAlternativeException exQuestionAlternative) {
-            throw new QuestionAlternativeException("Erro ao tentar salvar");
+            throw new QuestionAlternativeException("Erro ao tentar salvar a alternativa");
         }
     }
 
@@ -55,15 +71,8 @@ public class QuestionAlternativeService {
                     .map(questionAlternativeMapper::toDTO)
                     .collect(Collectors.toList());
         } catch (QuestionAlternativeException exQuestionAlternative) {
-            throw new QuestionAlternativeException("Erro ao tentar salvar todos");
+            throw new QuestionAlternativeException("Erro ao tentar salvar todas as alternativas");
         }
-    }
-
-    public List<QuestionAlternativeDTO> findByQuestionId(Long questionId) {
-        List<QuestionAlternative> questionAlternativeList = questionAlternativeRepository.findByQuestionId(questionId);
-        return questionAlternativeList.stream()
-                .map(questionAlternativeMapper::toDTO)
-                .collect(Collectors.toList());
     }
 
 }

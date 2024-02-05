@@ -4,6 +4,7 @@ import com.mjv.gamequiz.domains.QuestionAlternative;
 import com.mjv.gamequiz.dtos.QuestionAlternativeDTO;
 import com.mjv.gamequiz.services.QuestionAlternativeService;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -32,13 +33,15 @@ public class QuestionAlternativeController {
     }
 
     @PostMapping
-    public ResponseEntity<QuestionAlternativeDTO> save(@RequestBody QuestionAlternative questionAlternative) {
-        return ResponseEntity.ok().body(questionAlternativeService.save(questionAlternative));
+    @ResponseStatus(HttpStatus.CREATED)
+    public void save(@RequestBody QuestionAlternativeDTO questionAlternativeDTO) {
+        questionAlternativeService.save(questionAlternativeDTO);
     }
 
     @PostMapping("/list")
-    public ResponseEntity<List<QuestionAlternativeDTO>> save(@RequestBody List<QuestionAlternative> questionAlternativeList) {
-        return ResponseEntity.ok().body(questionAlternativeService.saveAll(questionAlternativeList));
+    @ResponseStatus(HttpStatus.CREATED)
+    public void save(@RequestBody List<QuestionAlternative> questionAlternativeList) {
+        questionAlternativeService.saveAll(questionAlternativeList);
     }
 
 }
