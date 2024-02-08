@@ -27,6 +27,11 @@ public class QuestionController {
         return ResponseEntity.ok().body(questionService.findAll());
     }
 
+    @GetMapping("/theme/{themeName}")
+    public List<QuestionDTO> getQuestionsByThemeName(@PathVariable String themeName) {
+        return questionService.getQuestionsByTheme(themeName);
+    }
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void save(@Valid @RequestBody QuestionDTO questionDTO) {

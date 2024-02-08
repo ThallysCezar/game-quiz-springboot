@@ -2,12 +2,14 @@ package com.mjv.gamequiz.controllers;
 
 import com.mjv.gamequiz.dtos.UserDTO;
 import com.mjv.gamequiz.services.UserService;
+import jakarta.servlet.http.HttpSession;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 @RestController
@@ -28,8 +30,8 @@ public class UserController {
     }
 
     @GetMapping("/{email}/{password}")
-    public ResponseEntity<UserDTO> findByEmailPassword(@Valid @PathVariable String email, @Valid @PathVariable String password) {
-        return ResponseEntity.ok().body(userService.findByEmailAndPassword(email, password));
+    public ResponseEntity<UserDTO> login(@Valid @PathVariable String email, @Valid @PathVariable String password, HttpSession httpSession)  throws NoSuchAlgorithmException {
+       return ResponseEntity.ok().body(userService.findByEmailAndPassword(email, password));
     }
 
     @PostMapping
