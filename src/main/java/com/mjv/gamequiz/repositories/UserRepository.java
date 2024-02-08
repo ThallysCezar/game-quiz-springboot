@@ -10,13 +10,9 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findUserById(Long id);
 
-    Optional<User> findByEmailAndPassword(String email, String password);
+    Optional<User> findByLoginAndPassword(String login, String password);
 
-    //    @Query(value = "SELECT *" +
-//                    "FROM t_user usuario " +
-//                    "WHERE usuario.email = :email " +
-//                     "AND usuario.password = :password", nativeQuery = true)
-    Optional<User> existsByEmailAndPassword(String email, String password);
+    Optional<User> existsByLoginAndPassword(String login, String password);
 
-    UserDetails findByEmail(String email);
+    UserDetails findByLogin(String login);
 }

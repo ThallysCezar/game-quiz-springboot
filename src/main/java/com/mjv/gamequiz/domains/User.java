@@ -32,23 +32,7 @@ public class User implements UserDetails {
 
     @NotBlank
     @NotNull
-    @Column(length = 200, nullable = false)
-    private String name;
-
-    @NotBlank
-    @NotNull
-    @Column(length = 200, nullable = false)
-    private String fullName;
-
-    @NotBlank
-    @NotNull
-    @Min(value = 18, message = "A idade mínima permitida é 18 anos.")
-    private Integer age;
-
-    @NotBlank
-    @NotNull
-    @Email(message = "O e-mail fornecido não é válido.")
-    private String email;
+    private String login;
 
     @NotBlank
     @NotNull
@@ -63,6 +47,12 @@ public class User implements UserDetails {
     @NotNull
     private UserRole role;
 
+    public User(String login, String encryptedPassword, UserRole role) {
+        this.login = login;
+        this.password = encryptedPassword;
+        this.role = role;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         if(this.role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_USER"));
@@ -71,7 +61,7 @@ public class User implements UserDetails {
 
     @Override
     public String getUsername() {
-        return email;
+        return login;
     }
 
     @Override
