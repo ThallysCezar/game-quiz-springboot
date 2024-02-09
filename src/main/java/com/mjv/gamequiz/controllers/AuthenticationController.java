@@ -6,6 +6,7 @@ import com.mjv.gamequiz.dtos.AuthenticationDTO;
 import com.mjv.gamequiz.dtos.LoginResponseDTO;
 import com.mjv.gamequiz.dtos.RegisterDTO;
 import com.mjv.gamequiz.repositories.UserRepository;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

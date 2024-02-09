@@ -2,6 +2,8 @@ package com.mjv.gamequiz.controllers;
 
 import com.mjv.gamequiz.dtos.QuestionDTO;
 import com.mjv.gamequiz.services.QuestionService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -13,6 +15,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/question")
 @AllArgsConstructor
+@SecurityRequirement(name = "Bearer Authentication")
 public class QuestionController {
 
     private final QuestionService questionService;

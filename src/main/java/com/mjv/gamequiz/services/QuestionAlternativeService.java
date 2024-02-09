@@ -75,5 +75,9 @@ public class QuestionAlternativeService {
         }
     }
 
+    public List<Object[]> countAlternativesByTheme() {
+        return questionAlternativeRepository.countAlternativesByTheme();
+    }
+
 }
 
