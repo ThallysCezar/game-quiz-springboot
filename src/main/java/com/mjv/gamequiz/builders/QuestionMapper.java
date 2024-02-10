@@ -28,11 +28,11 @@ public class QuestionMapper {
 
     public List<QuestionDTO> toListDTO(List<Question> entityList) {
         return entityList.stream()
-                .map(this::toDTO).collect(Collectors.toCollection(ArrayList::new));
+                .map(this::toDTO).collect(Collectors.toList());
     }
 
     public List<Question> toList(List<QuestionDTO> dtosList) {
         return dtosList.stream()
-                .map(this::toEntity).collect(Collectors.toCollection(ArrayList::new));
+                .map(this::toEntity).collect(Collectors.toList());
     }
 }

@@ -26,13 +26,13 @@ public class QuestionAlternativeMapper {
         return modelMapper.map(dto, QuestionAlternative.class);
     }
 
-    public ArrayList<QuestionAlternativeDTO> toListDTO(List<QuestionAlternative> modelList) {
+    public List<QuestionAlternativeDTO> toListDTO(List<QuestionAlternative> modelList) {
         return modelList.stream()
-                .map(this::toDTO).collect(Collectors.toCollection(ArrayList::new));
+                .map(this::toDTO).collect(Collectors.toList());
     }
 
-    public ArrayList<QuestionAlternative> toList(List<QuestionAlternativeDTO> dtosList) {
+    public List<QuestionAlternative> toList(List<QuestionAlternativeDTO> dtosList) {
         return dtosList.stream()
-                .map(this::toEntity).collect(Collectors.toCollection(ArrayList::new));
+                .map(this::toEntity).collect(Collectors.toList());
     }
 }

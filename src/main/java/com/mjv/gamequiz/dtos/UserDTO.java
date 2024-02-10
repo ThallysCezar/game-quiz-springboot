@@ -1,5 +1,6 @@
 package com.mjv.gamequiz.dtos;
 
+import com.mjv.gamequiz.domains.enums.UserRole;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,19 +13,15 @@ import lombok.Setter;
 public class UserDTO {
 
     private Long id;
-    private String name;
-    private String fullName;
-    private Integer age;
-    private String email;
+    private String login;
     private String password;
+    private UserRole role;
 
     @Override
     public String toString() {
         return "\n\nUser:" +
-                "\nname= " + name +
-                "\nfullName= " + fullName +
-                "\nage= " + age +
-                "\nemail= " + email +
-                "\npassword= " + password;
+                "\nlogin= " + login +
+                "\npassword= " + password +
+                "\nrole= " + role;
     }
 }

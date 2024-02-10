@@ -23,8 +23,29 @@ Bem-vindo ao GameQuiz! Este é um projeto de quiz de perguntas e respostas desen
 ```bash
   mvn spring-boot:run
 ```
-- Configuração do Banco de dados:
-    Atualmente, o projeto utiliza um banco de dados H2 para facilitar o desenvolvimento. Se você deseja migrar para o PostgreSQL, modifique as configurações em src/main/resources/application.properties conforme necessário.
+- ### Configuração do Banco de Dados
+
+1. **Instalação do PostgreSQL**: Se você ainda não tem o PostgreSQL instalado em seu sistema, siga as instruções de instalação fornecidas no [site oficial do PostgreSQL](https://www.postgresql.org/download/) para o seu sistema operacional.
+
+2. **Criação do Banco de Dados**: Após a instalação, você precisará criar um banco de dados para o seu aplicativo. Você pode fazer isso usando a ferramenta de linha de comando `psql` fornecida com o PostgreSQL ou uma interface gráfica como o pgAdmin.
+
+   ```bash
+   psql -U postgres
+   CREATE DATABASE gamequiz;
+   ```
+    Substitua 'postgres' pelo seu nome de usuário do PostgreSQL, se necessário.
+3. Configuração do Spring Boot: Agora que o banco de dados está pronto, você precisa configurar seu projeto Spring Boot para usar o PostgreSQL. No application.properties:
+```properties
+# PostgreSQL
+spring.datasource.url=jdbc:postgresql://localhost:5432/gamequiz
+spring.datasource.username=seu_usuario
+spring.datasource.password=sua_senha
+spring.datasource.driver-class-name=org.postgresql.Driver
+spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+```
+4. Certifique-se de substituir 'seu_usuario' e 'sua_senha' pelo seu nome de usuário e senha do PostgreSQL, respectivamente. O URL jdbc também pode precisar ser ajustado dependendo da configuração do seu PostgreSQL.
+5. Teste de Conexão: Após configurar tudo, reinicie seu aplicativo Spring Boot e verifique se ele consegue se conectar ao banco de dados PostgreSQL corretamente.
+    
 ## Documentação da API
 - QuestionController
 
@@ -43,6 +64,16 @@ Bem-vindo ao GameQuiz! Este é um projeto de quiz de perguntas e respostas desen
 | Parâmetro   | Tipo       | Descrição                           |
 | :---------- | :--------- | :---------------------------------- |
 | `id` | `Long` | **Obrigatório**. O id da sua pergunta  |
+
+### Recupera uma questão baseada no seu tema.
+
+```http
+  GET /questions/theme/{themeName}
+```
+
+| Parâmetro   | Tipo       | Descrição                                                    |
+|:------------| :--------- |:-------------------------------------------------------------|
+| `themeName` | `String` | **Obrigatório**. O tema para recuperar uma questão por tema. |
 
 ### Cria uma nova pergunta. JSON exemplo:
 
@@ -118,6 +149,12 @@ Bem-vindo ao GameQuiz! Este é um projeto de quiz de perguntas e respostas desen
 | Parâmetro   | Tipo       | Descrição                           |
 | :---------- | :--------- | :---------------------------------- |
 | `id` | `Long` | **Obrigatório**. O id da pergunta para achar a alternativa |
+
+### Recupera a contagem de uma questão baseada no seu tema.
+
+```http
+  GET /questionsAlternatives/count-by-theme
+```
 
 ### Cria uma nova pergunta. JSON exemplo:
 
@@ -216,6 +253,32 @@ Bem-vindo ao GameQuiz! Este é um projeto de quiz de perguntas e respostas desen
   }
 ```
 
+- AuthenticationController
+### Registrar um usuário.
+
+```http
+  POST /auth/register
+```
+```JSON
+ {
+      "login": "robson@hotmail.com",
+      "password": "123456789",
+      "role": "USER"
+}
+```
+
+### Recupera um usuário específico com base no ID fornecido.
+
+```http
+  POST /auth/login
+```
+```JSON
+ {
+      "login": "thallys@hotmail.com",
+      "password": "123456789"
+  }
+```
+
 ### Documentação com Swagger
 A documentação completa da API pode ser encontrada no Swagger também. Para acessar a documentação, siga as etapas abaixo:
 
@@ -225,8 +288,30 @@ A documentação completa da API pode ser encontrada no Swagger também. Para ac
 
    [Swagger API Documentation](http://localhost:8080/swagger-ui/index.html)
 
-3. Isso abrirá a interface do Swagger, onde você pode explorar e testar os endpoints da API.
+3. Isso abrirá a interface do Swagger, onde você pode explorar e testar os endpoints da API, apenas se tiver autenticado.
 4. Use os exemplos com JSON com que já tem disponível aqui, ficará mais fácil para testar.
+
+## Autenticação com o Spring Security e JWT
+Para acessar os endpoints protegidos, é necessário autenticar-se usando JWT. Siga as instruções abaixo para autenticar-se:
+
+1. Faça uma solicitação POST para /authenticate com as credenciais de login no corpo da solicitação. Aqui estão as credenciais de login:
+   - 'thallys@hotmail.com', senha: '123456789'
+   - 'samuel@hotmail.com', senha: '123456789'
+   - 'bianca@hotmail.com', senha: '123456789'
+   - 'robson@hotmail.com', senha: '123456789'
+2. Você receberá um token JWT como resposta.
+3. Copie o token JWT recebido.
+4. Abra o Swagger e clique no botão "Authorize" no canto superior direito.
+5. No campo "Value", cole o token JWT copiado.
+6. Agora você está autenticado e pode acessar os endpoints protegidos.
+
+OBS: Os usuários têm duas roles: ADMIN e USER. Apenas o usuário com o email 'thallys@hotmail.com' tem a role ADMIN e pode acessar endpoints que exigem permissões de ADMIN:
+- POST, PUT e DELETE de qualquer endpoint.
+- E acessar e modificar todos os outros endpoints que não sejam esses.
+
+Divirta-se explorando a API!
+
+
 
 ## Contexto do Projeto
 

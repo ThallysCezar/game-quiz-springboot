@@ -9,6 +9,7 @@ import com.mjv.gamequiz.repositories.QuestionRepository;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Objects;
@@ -49,4 +50,7 @@ public class QuestionService {
         }
     }
 
+    public List<QuestionDTO> getQuestionsByTheme(String theme) {
+        return questionMapper.toListDTO(questionRepository.findByTheme(theme));
+    }
 }

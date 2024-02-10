@@ -39,7 +39,7 @@ public class QuestionAlternative implements Serializable {
 
     @NotBlank
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_question", referencedColumnName = "id")
     private Question question;
 
