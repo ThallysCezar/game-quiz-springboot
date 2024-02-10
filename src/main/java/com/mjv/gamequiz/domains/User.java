@@ -40,8 +40,8 @@ public class User implements UserDetails {
     @Size(min = 4, message = "A senha deve ter pelo menos 4 caracteres.")
     private String password;
 
-    @OneToOne(mappedBy = "user")
-    @JdbcTypeCode(SqlTypes.JSON)
+    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+//    @JdbcTypeCode(SqlTypes.JSON)
     private Player player;
 
     @NotNull

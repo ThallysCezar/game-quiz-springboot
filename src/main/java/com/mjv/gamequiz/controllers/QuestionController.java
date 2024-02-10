@@ -6,6 +6,8 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -26,8 +28,8 @@ public class QuestionController {
     }
 
     @GetMapping
-    public ResponseEntity<List<QuestionDTO>> findAllQuestions() {
-        return ResponseEntity.ok().body(questionService.findAll());
+    public ResponseEntity<List<QuestionDTO>> findAllQuestions(@PageableDefault Pageable pageable) {
+        return ResponseEntity.ok().body(questionService.findAllQuestionsWithAlternatives());
     }
 
     @GetMapping("/theme/{themeName}")

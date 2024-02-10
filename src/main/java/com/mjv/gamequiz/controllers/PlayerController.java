@@ -36,11 +36,6 @@ public class PlayerController {
         return ResponseEntity.noContent().build();
     }
 
-//    @GetMapping("/{login}/{password}")
-//    public ResponseEntity<PlayerDTO> login(@Valid @PathVariable String login, @Valid @PathVariable String password) {
-//        return ResponseEntity.ok().body(playerService.findByEmailAndPassword(login, password));
-//    }
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public void save(@Valid @RequestBody PlayerDTO dto) {
@@ -52,4 +47,5 @@ public class PlayerController {
     public void deletePlayer(@Valid @PathVariable Long id){
         playerService.deletePlayer(id);
     }
+
 }

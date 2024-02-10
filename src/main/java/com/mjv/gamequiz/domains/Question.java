@@ -41,6 +41,6 @@ public class Question implements Serializable {
     private Long correctQuestionAlternativeID;
 
     @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<QuestionAlternative> questionAlternativeArrayList;
+    private List<QuestionAlternative> questionAlternativeList;
 
 }

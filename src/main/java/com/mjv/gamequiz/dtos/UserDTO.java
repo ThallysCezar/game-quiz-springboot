@@ -17,6 +17,9 @@ public class UserDTO {
     private String password;
     private UserRole role;
 
+    public UserDTO(Long id, String username) {
+    }
+
     @Override
     public String toString() {
         return "\n\nUser:" +

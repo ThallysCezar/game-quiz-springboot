@@ -16,7 +16,7 @@ public class PlayerDTO {
     private String nickName;
     private Integer score;
     private String theme;
-    private User user;
+    private UserDTO user;
 
     @Override
     public String toString() {

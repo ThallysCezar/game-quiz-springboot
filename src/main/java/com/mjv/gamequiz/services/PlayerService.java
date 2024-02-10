@@ -1,7 +1,9 @@
 package com.mjv.gamequiz.services;
 
 import com.mjv.gamequiz.builders.PlayerMapper;
+import com.mjv.gamequiz.builders.UserMapper;
 import com.mjv.gamequiz.domains.Player;
+import com.mjv.gamequiz.domains.User;
 import com.mjv.gamequiz.dtos.PlayerDTO;
 import com.mjv.gamequiz.exceptions.PlayerException;
 import com.mjv.gamequiz.repositories.PlayerRepository;
@@ -16,8 +18,8 @@ import java.util.Objects;
 public class PlayerService {
 
     private final PlayerRepository playerRepository;
-
     private final PlayerMapper playerMapper;
+    private final UserMapper userMapper;
 
     public List<PlayerDTO> findAll(){
         List<Player> players = playerRepository.findAll();
@@ -27,7 +29,6 @@ public class PlayerService {
 
         return playerMapper.toListDTO(players);
     }
-
 
     public PlayerDTO findById(Long id){
         if (Objects.isNull(id)) {
@@ -42,20 +43,19 @@ public class PlayerService {
                 .orElseThrow(() -> new PlayerException("Erro ao tentar procurar um player"));
     }
 
-
     public PlayerDTO updatePlayer(PlayerDTO playerDTO){
         try {
             Player existingPlayer = playerRepository.findById(playerDTO.getId())
                     .orElseThrow(() -> new PlayerException("Jogador não encontrado com ID: " + playerDTO.getId()));
-            existingPlayer.setUser(playerDTO.getUser());
-            existingPlayer.setNickName(playerDTO.getNickName());
 
+            User user = userMapper.toEntity(playerDTO.getUser());
+            existingPlayer.setUser(user);
+            existingPlayer.setNickName(playerDTO.getNickName());
             return playerMapper.toDTO(playerRepository.saveAndFlush(existingPlayer));
         } catch (Exception exUser) {
             throw new PlayerException("Erro ao atualizar o player.");
         }
     }
-
 
     public PlayerDTO save(PlayerDTO playerDTO) {
         try {
@@ -64,7 +64,6 @@ public class PlayerService {
             throw new PlayerException("Erro ao salvar um player.");
         }
     }
-
 
     public void deletePlayer(Long id){
         if (Objects.isNull(id)) {

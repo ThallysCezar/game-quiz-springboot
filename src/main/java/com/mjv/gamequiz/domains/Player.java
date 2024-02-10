@@ -39,8 +39,8 @@ public class Player implements Serializable {
     @Column(length = 200, nullable = false)
     private String theme;
 
-    @JdbcTypeCode(SqlTypes.JSON)
-    @OneToOne(cascade = CascadeType.ALL)
+//    @JdbcTypeCode(SqlTypes.JSON)
+    @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_user", referencedColumnName = "id")
     private User user;
 

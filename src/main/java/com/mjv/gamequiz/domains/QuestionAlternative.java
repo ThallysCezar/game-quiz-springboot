@@ -37,9 +37,8 @@ public class QuestionAlternative implements Serializable {
     @Column(length = 200, nullable = false)
     private String reference;
 
-    @NotBlank
-    @NotNull
-    @ManyToOne(fetch = FetchType.EAGER)
+
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_question", referencedColumnName = "id")
     private Question question;
 
