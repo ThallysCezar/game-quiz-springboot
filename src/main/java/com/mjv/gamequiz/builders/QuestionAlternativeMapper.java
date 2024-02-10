@@ -3,6 +3,7 @@ package com.mjv.gamequiz.builders;
 import com.mjv.gamequiz.domains.QuestionAlternative;
 import com.mjv.gamequiz.dtos.QuestionAlternativeDTO;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -31,8 +32,8 @@ public class QuestionAlternativeMapper {
                 .map(this::toDTO).collect(Collectors.toList());
     }
 
-    public List<QuestionAlternative> toList(List<QuestionAlternativeDTO> dtosList) {
-        return dtosList.stream()
-                .map(this::toEntity).collect(Collectors.toList());
+    public Page<QuestionAlternativeDTO> toPageDTO(Page<QuestionAlternative> page) {
+        return page.map(this::toDTO);
     }
+
 }

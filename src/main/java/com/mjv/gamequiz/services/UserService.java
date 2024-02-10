@@ -17,7 +17,6 @@ import java.util.Objects;
 public class UserService {
 
     private final UserMapper userMapper;
-
     private final UserRepository userRepository;
 
     public List<UserDTO> findAll() {

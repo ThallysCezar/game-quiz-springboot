@@ -9,4 +9,5 @@ public class RegisterDTO {
     private String login;
     private String password;
     private UserRole role;
+
 }

@@ -30,8 +30,9 @@ public class UserMapper {
                 .map(this::toDTO).collect(Collectors.toList());
     }
 
-    public List<User> toList(List<UserDTO> dtosList) {
-        return dtosList.stream()
-                .map(this::toEntity).collect(Collectors.toList());
-    }
+//To ListEntity
+//    public List<User> toList(List<UserDTO> dtosList) {
+//        return dtosList.stream()
+//                .map(this::toEntity).collect(Collectors.toList());
+//    }
 }

@@ -5,6 +5,9 @@ import com.mjv.gamequiz.dtos.QuestionAlternativeDTO;
 import com.mjv.gamequiz.services.QuestionAlternativeService;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -24,8 +27,8 @@ public class QuestionAlternativeController {
     }
 
     @GetMapping
-    public ResponseEntity<List<QuestionAlternativeDTO>> findAll() {
-        return ResponseEntity.ok().body(questionAlternativeService.findAll());
+    public ResponseEntity<Page<QuestionAlternativeDTO>> findAll(Pageable pageable) {
+        return ResponseEntity.ok().body(questionAlternativeService.findAll(pageable));
     }
 
     @GetMapping("/question-id/{id}")

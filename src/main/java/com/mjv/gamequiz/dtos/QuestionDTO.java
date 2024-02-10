@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Getter
 @Setter
@@ -18,7 +18,7 @@ public class QuestionDTO {
     private String question;
     private String response;
     private Long correctQuestionAlternativeID;
-    private ArrayList<QuestionAlternativeDTO> questionAlternativeDTOArrayList;
+    private List<QuestionAlternativeDTO> questionAlternativeDTOList;
 
     @Override
     public String toString() {
@@ -28,6 +28,6 @@ public class QuestionDTO {
                 "\nquestion = " + question +
                 "\nresponse = " + response +
                 "\ncorrectQuestionAlternativeID = " + correctQuestionAlternativeID +
-                "\nquestionAlternativeDTOArrayList = " + questionAlternativeDTOArrayList;
+                "\nquestionAlternativeDTOArrayList = " + questionAlternativeDTOList;
     }
 }

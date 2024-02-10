@@ -4,12 +4,11 @@ import com.mjv.gamequiz.builders.QuestionMapper;
 import com.mjv.gamequiz.domains.Question;
 import com.mjv.gamequiz.dtos.QuestionDTO;
 import com.mjv.gamequiz.exceptions.QuestionException;
-import com.mjv.gamequiz.exceptions.UserException;
 import com.mjv.gamequiz.repositories.QuestionRepository;
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.validation.annotation.Validated;
 
 import java.util.List;
 import java.util.Objects;
@@ -21,8 +20,16 @@ public class QuestionService {
     private final QuestionRepository questionRepository;
     private final QuestionMapper questionMapper;
 
-    public List<QuestionDTO> findAll() {
-        List<Question> questions = questionRepository.findAll();
+    public Page<QuestionDTO> findAll(Pageable pageable) {
+        Page<Question> questions = questionRepository.findAll(pageable);
+        if (questions.isEmpty()) {
+            throw new QuestionException("Nenhuma pergunta encontrada.");
+        }
+        return questionMapper.toPageDTO(questions);
+    }
+
+    public List<QuestionDTO> findAllQuestionsWithAlternatives() {
+        List<Question> questions = questionRepository.findAllQuestionsWithAlternatives();
         if (questions.isEmpty()) {
             throw new QuestionException("Nenhuma pergunta encontrada.");
         }
@@ -44,13 +51,20 @@ public class QuestionService {
 
     public QuestionDTO save(QuestionDTO questionDTO) {
         try {
-            return questionMapper.toDTO(questionRepository.save(questionMapper.toEntity(questionDTO)));
-        } catch (QuestionException exQuestion) {
-            throw new QuestionException(String.format("Ocorreu um erro ao tentar salvar a pergunta '%s'.", questionDTO));
+            Question questionEntity = questionMapper.toEntity(questionDTO);
+            Question savedQuestion = questionRepository.save(questionEntity);
+            return questionMapper.toDTO(savedQuestion);
+        } catch (Exception ex) {
+            throw new QuestionException("Erro ao tentar salvar a pergunta.");
         }
     }
 
     public List<QuestionDTO> getQuestionsByTheme(String theme) {
-        return questionMapper.toListDTO(questionRepository.findByTheme(theme));
+        try {
+            return questionMapper.toListDTO(questionRepository.findByTheme(theme));
+        } catch (Exception ex) {
+            throw new QuestionException("Erro ao procurar por tema de questões.");
+        }
     }
+
 }

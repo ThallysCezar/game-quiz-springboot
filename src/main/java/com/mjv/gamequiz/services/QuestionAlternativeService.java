@@ -6,6 +6,8 @@ import com.mjv.gamequiz.dtos.QuestionAlternativeDTO;
 import com.mjv.gamequiz.exceptions.QuestionAlternativeException;
 import com.mjv.gamequiz.repositories.QuestionAlternativeRepository;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -20,13 +22,12 @@ public class QuestionAlternativeService {
 
     private final QuestionAlternativeMapper questionAlternativeMapper;
 
-
-    public List<QuestionAlternativeDTO> findAll() {
-        List<QuestionAlternative> questions = questionAlternativeRepository.findAll();
-        if (questions.isEmpty()) {
-            throw new QuestionAlternativeException("Nenhuma questionAlternative encontrada.");
+    public Page<QuestionAlternativeDTO> findAll(Pageable pageable) {
+        Page<QuestionAlternative> questionAlternatives = questionAlternativeRepository.findAll(pageable);
+        if (questionAlternatives.isEmpty()) {
+            throw new QuestionAlternativeException("Nenhuma alternativa de pergunta encontrada.");
         }
-        return questionAlternativeMapper.toListDTO(questions);
+        return questionAlternativeMapper.toPageDTO(questionAlternatives);
     }
 
     public QuestionAlternativeDTO findById(Long id) {
@@ -80,4 +81,3 @@ public class QuestionAlternativeService {
     }
 
 }
-
