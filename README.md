@@ -6,7 +6,7 @@ Bem-vindo ao GameQuiz! Este é um projeto de quiz de perguntas e respostas desen
 
 ## Stack utilizada
 
-**Back-end:** Java, Spring Boot e PostgreSQL como banco de dados.
+**Back-end:** Java, Spring Boot, PostgreSQL + DBeaver, JUnit + Mockito para testes unitários e Spring Security + JWT para autenticação.
 
 
 ## Configuração
@@ -267,7 +267,7 @@ spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
 }
 ```
 
-### Recupera um usuário específico com base no ID fornecido.
+### Recupera o token, ao fazer login, com login e password validos.
 
 ```http
   POST /auth/login
@@ -278,6 +278,50 @@ spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
       "password": "123456789"
   }
 ```
+
+- RankingTopController
+### Recupera os scores e o nickName dos players e faz um ranking dos scores.
+
+```http
+  GET /ranking-players
+```
+
+- QuizController
+### Verifica o user, pelo login, e recupera as questões por temas.
+
+```http
+  GET /game-quiz/{login}/{theme}
+```
+
+| Parâmetro   | Tipo       | Descrição                                                        |
+| :---------- | :--------- |:-----------------------------------------------------------------|
+| `login`      | `String` | **Obrigatório**. O login(email) do user que você quer verificar. |
+| `theme`      | `String` | **Obrigatório**. O questões por tema que você quer recuperar.    |
+
+### Game-Quiz
+- Endpoint, que o jogo se basea:
+  - Coloca o id da questão(o qual recuperou no endpoint de antes)
+    - OBS: cada questão tem 8 alternativas.
+  - Coloca a alternative que você acha que é a correta
+  - Coloca o nickname do seu jogador:
+     - Jogador acertou: receberá 100 pontos de scores,
+     - senão, não ganhará nada.
+
+```http
+  POST /game-quiz/answer
+```
+```JSON
+ {
+      "questionId": 5,
+      "chosenAlternativeId": 40,
+      "nickName": "Samuca"
+  }
+```
+- Nicknames:
+  - "Thays"
+  - "Samuca"
+  - "Robinho"
+  - "BiaBia"
 
 ### Documentação com Swagger
 A documentação completa da API pode ser encontrada no Swagger também. Para acessar a documentação, siga as etapas abaixo:

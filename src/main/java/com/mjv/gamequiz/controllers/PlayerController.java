@@ -1,6 +1,5 @@
 package com.mjv.gamequiz.controllers;
 
-import com.mjv.gamequiz.domains.Player;
 import com.mjv.gamequiz.dtos.PlayerDTO;
 import com.mjv.gamequiz.services.PlayerService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -31,7 +30,7 @@ public class PlayerController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<PlayerDTO> updatePlayer(@RequestBody PlayerDTO dto){
+    public ResponseEntity<PlayerDTO> updatePlayer(@RequestBody PlayerDTO dto) {
         playerService.updatePlayer(dto);
         return ResponseEntity.noContent().build();
     }
@@ -44,7 +43,7 @@ public class PlayerController {
 
     @DeleteMapping("/delete/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deletePlayer(@Valid @PathVariable Long id){
+    public void deletePlayer(@Valid @PathVariable Long id) {
         playerService.deletePlayer(id);
     }
 

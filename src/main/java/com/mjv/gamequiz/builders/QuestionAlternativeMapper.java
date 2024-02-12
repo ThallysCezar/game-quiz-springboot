@@ -6,7 +6,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -15,15 +14,15 @@ public class QuestionAlternativeMapper {
 
     private final ModelMapper modelMapper;
 
-    public QuestionAlternativeMapper(ModelMapper modelMapper){
+    public QuestionAlternativeMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }
 
-    public QuestionAlternativeDTO toDTO(QuestionAlternative entity){
+    public QuestionAlternativeDTO toDTO(QuestionAlternative entity) {
         return modelMapper.map(entity, QuestionAlternativeDTO.class);
     }
 
-    public QuestionAlternative toEntity(QuestionAlternativeDTO dto){
+    public QuestionAlternative toEntity(QuestionAlternativeDTO dto) {
         return modelMapper.map(dto, QuestionAlternative.class);
     }
 

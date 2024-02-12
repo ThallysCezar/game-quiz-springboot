@@ -70,4 +70,15 @@ public class UserService {
         return true;
     }
 
+
+    public boolean userExists(String login) {
+        if (StringUtils.isEmpty(login)) {
+            throw new IllegalArgumentException("O usuário não pode ser nulo, tente novamente.");
+        }
+        if(!userRepository.existsByLogin(login)){
+            return false;
+        }
+        return true;
+    }
+
 }

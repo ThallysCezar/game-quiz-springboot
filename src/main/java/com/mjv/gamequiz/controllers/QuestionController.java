@@ -3,7 +3,6 @@ package com.mjv.gamequiz.controllers;
 import com.mjv.gamequiz.dtos.QuestionDTO;
 import com.mjv.gamequiz.services.QuestionService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Pageable;

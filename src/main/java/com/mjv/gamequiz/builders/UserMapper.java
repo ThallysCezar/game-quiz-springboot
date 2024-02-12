@@ -5,7 +5,6 @@ import com.mjv.gamequiz.dtos.UserDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -13,15 +12,15 @@ import java.util.stream.Collectors;
 public class UserMapper {
     private final ModelMapper modelMapper;
 
-    public UserMapper(ModelMapper modelMapper){
+    public UserMapper(ModelMapper modelMapper) {
         this.modelMapper = modelMapper;
     }
 
-    public UserDTO toDTO(User entity){
+    public UserDTO toDTO(User entity) {
         return modelMapper.map(entity, UserDTO.class);
     }
 
-    public User toEntity(UserDTO dto){
+    public User toEntity(UserDTO dto) {
         return modelMapper.map(dto, User.class);
     }
 
