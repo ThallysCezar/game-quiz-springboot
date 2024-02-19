@@ -6,7 +6,7 @@ Bem-vindo ao GameQuiz! Este é um projeto de quiz de perguntas e respostas desen
 
 ## Stack utilizada
 
-**Back-end:** Java, Spring Boot, PostgreSQL + DBeaver, JUnit + Mockito para testes unitários e Spring Security + JWT para autenticação.
+**Back-end:** Java, Spring Boot, PostgreSQL + DBeaver, JUnit + Mockito para testes unitários, Spring Security + JWT para autenticação, Flyway para migração de banco de dados.
 
 
 ## Configuração
@@ -25,7 +25,7 @@ Bem-vindo ao GameQuiz! Este é um projeto de quiz de perguntas e respostas desen
 ```
 - ### Configuração do Banco de Dados
 
-1. **Instalação do PostgreSQL**: Se você ainda não tem o PostgreSQL instalado em seu sistema, siga as instruções de instalação fornecidas no [site oficial do PostgreSQL](https://www.postgresql.org/download/) para o seu sistema operacional.
+1. **Instalação do PostgreSQL**: Se você ainda não tem o PostgreSQL instalado em seu sistema, siga as instruções de instalação fornecidas no site oficial do PostgreSQL para o seu sistema operacional.
 
 2. **Criação do Banco de Dados**: Após a instalação, você precisará criar um banco de dados para o seu aplicativo. Você pode fazer isso usando a ferramenta de linha de comando `psql` fornecida com o PostgreSQL ou uma interface gráfica como o pgAdmin.
 
@@ -33,18 +33,25 @@ Bem-vindo ao GameQuiz! Este é um projeto de quiz de perguntas e respostas desen
    psql -U postgres
    CREATE DATABASE gamequiz;
    ```
-    Substitua 'postgres' pelo seu nome de usuário do PostgreSQL, se necessário.
-3. Configuração do Spring Boot: Agora que o banco de dados está pronto, você precisa configurar seu projeto Spring Boot para usar o PostgreSQL. No application.properties:
-```properties
-# PostgreSQL
-spring.datasource.url=jdbc:postgresql://localhost:5432/gamequiz
-spring.datasource.username=seu_usuario
-spring.datasource.password=sua_senha
-spring.datasource.driver-class-name=org.postgresql.Driver
-spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
-```
-4. Certifique-se de substituir 'seu_usuario' e 'sua_senha' pelo seu nome de usuário e senha do PostgreSQL, respectivamente. O URL jdbc também pode precisar ser ajustado dependendo da configuração do seu PostgreSQL.
-5. Teste de Conexão: Após configurar tudo, reinicie seu aplicativo Spring Boot e verifique se ele consegue se conectar ao banco de dados PostgreSQL corretamente.
+   Substitua 'postgres' pelo seu nome de usuário do PostgreSQL, se necessário.
+3. Configuração do Flyway: O Flyway é uma ferramenta de migração de banco de dados que permite gerenciar e versionar alterações em seu banco de dados. Certifique-se de ter o Flyway instalado e configurado em seu projeto. O arquivo flyway.conf contém as configurações para o Flyway, incluindo o nome do banco de dados. Certifique-se de alterar ou criar um banco de dados com o mesmo nome especificado no flyway.conf.
+   - Execute o comando depois da criação do banco de dados, via Flyway:
+    ```bash
+      mvn flyway:migrate
+    ```
+    
+5. Configuração do Spring Boot: Agora que o banco de dados está pronto, você precisa configurar seu projeto Spring Boot para usar o PostgreSQL. No arquivo application.properties:
+   ```properties
+   # PostgreSQL
+    spring.datasource.url=jdbc:postgresql://localhost:5432/gamequiz
+    spring.datasource.username=seu_usuario
+    spring.datasource.password=sua_senha
+    spring.datasource.driver-class-name=org.postgresql.Driver
+    spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+   ```
+   Certifique-se de substituir 'seu_usuario' e 'sua_senha' pelo seu nome de usuário e senha do PostgreSQL, respectivamente. O URL jdbc também pode precisar ser ajustado dependendo da configuração do seu PostgreSQL.
+   
+6. Teste de Conexão: Após configurar tudo, reinicie seu aplicativo Spring Boot e verifique se ele consegue se conectar ao banco de dados PostgreSQL corretamente.
     
 ## Documentação da API
 - QuestionController
