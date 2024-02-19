@@ -15,7 +15,6 @@ public class PlayerDTO {
     private Long id;
     private String nickName;
     private Integer score;
-    private String theme;
     private UserDTO user;
 
     @Override
@@ -24,7 +23,6 @@ public class PlayerDTO {
                 "id=" + id +
                 ", nickName='" + nickName + '\'' +
                 ", score=" + score +
-                ", theme='" + theme + '\'' +
                 ", user=" + user +
                 '}';
     }

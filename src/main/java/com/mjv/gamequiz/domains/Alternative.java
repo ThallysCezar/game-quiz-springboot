@@ -9,15 +9,14 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.io.Serializable;
-import java.util.List;
 
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "t_question")
-public class Question implements Serializable {
+@Table(name = "t_question_choices")
+public class Alternative implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Id
@@ -26,21 +25,20 @@ public class Question implements Serializable {
 
     @NotBlank
     @NotNull
-    @Column(length = 200, nullable = false)
-    private String answer;
+    private String alternative;
 
     @NotBlank
+    @NotNull
+    private Boolean itsCorrect;
+
+    @NotBlank
+    @NotNull
     @Column(length = 200, nullable = false)
-    private String response;
+    private String content;
 
-    @Column(name = "correct_alternativeid")
-    private Long correctAlternativeID;
-
-    @OneToMany(mappedBy = "question", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-    private List<Alternative> alternativeList;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "fk_theme", referencedColumnName = "id")
-    private Theme theme;
+    @JoinColumn(name = "fk_question", referencedColumnName = "id")
+    private Question question;
 
 }

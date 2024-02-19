@@ -1,9 +1,11 @@
 package com.mjv.gamequiz.factories;
 
+import com.mjv.gamequiz.domains.Alternative;
 import com.mjv.gamequiz.domains.Question;
-import com.mjv.gamequiz.domains.QuestionAlternative;
-import com.mjv.gamequiz.dtos.QuestionAlternativeDTO;
+import com.mjv.gamequiz.domains.Theme;
+import com.mjv.gamequiz.dtos.AlternativeDTO;
 import com.mjv.gamequiz.dtos.QuestionDTO;
+import com.mjv.gamequiz.dtos.ThemeDTO;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,50 +14,50 @@ public class QuestionFactory {
 
     public static Question createValidQuestion() {
         Question question = new Question();
-        question.setId(1L); // Defina um ID válido para a questão
-        question.setTheme("Sample Theme");
-        question.setQuestion("Sample Question");
+        question.setId(1L);
+        final var theme = new Theme();
+        question.setTheme(theme);
+        question.setAnswer("Sample Question");
         question.setResponse("Sample Response");
-        question.setCorrectQuestionAlternativeID(1L); // Defina um ID válido para a alternativa correta
+        question.setCorrectAlternativeID(1L);
 
-        // Adicione alternativas de questão válidas
-        List<QuestionAlternative> alternatives = new ArrayList<>();
-        QuestionAlternative alternative1 = new QuestionAlternative();
-        alternative1.setId(1L); // Defina um ID válido para a alternativa
-        alternative1.setAlternative("Sample Alternative 1");
-        alternative1.setItsCorrect(true); // Marque como correta ou incorreta conforme necessário
+        List<Alternative> alternatives = new ArrayList<>();
+        Alternative alternative1 = new Alternative();
+        alternative1.setId(1L);
+        alternative1.setAlternative("Sample Alternative A");
+        alternative1.setItsCorrect(true);
         alternative1.setQuestion(question);
         alternatives.add(alternative1);
 
-        QuestionAlternative alternative2 = new QuestionAlternative();
+        Alternative alternative2 = new Alternative();
         alternative2.setId(2L);
-        alternative2.setAlternative("Sample Alternative 2");
+        alternative2.setAlternative("Sample Alternative B");
         alternative2.setItsCorrect(false);
         alternative2.setQuestion(question);
         alternatives.add(alternative2);
 
-        question.setQuestionAlternativeList(alternatives);
+        question.setAlternativeList(alternatives);
 
         return question;
     }
 
     public static QuestionDTO createValidQuestionDTO() {
         QuestionDTO questionDTO = new QuestionDTO();
-        questionDTO.setTheme("Sample Theme");
-        questionDTO.setQuestion("Sample Question");
+        final var theme = new ThemeDTO();
+        questionDTO.setTheme(theme);
+        questionDTO.setAnswer("Sample Question");
         questionDTO.setResponse("Sample Response");
 
-        // Adicione alternativas de questão válidas
-        List<QuestionAlternativeDTO> alternativeDTOs = new ArrayList<>();
-        QuestionAlternativeDTO alternativeDTO1 = new QuestionAlternativeDTO();
-        alternativeDTO1.setAlternative("Sample Alternative 1");
+        List<AlternativeDTO> alternativeDTOs = new ArrayList<>();
+        AlternativeDTO alternativeDTO1 = new AlternativeDTO();
+        alternativeDTO1.setAlternative("Sample Alternative A");
         alternativeDTOs.add(alternativeDTO1);
 
-        QuestionAlternativeDTO alternativeDTO2 = new QuestionAlternativeDTO();
-        alternativeDTO2.setAlternative("Sample Alternative 2");
+        AlternativeDTO alternativeDTO2 = new AlternativeDTO();
+        alternativeDTO2.setAlternative("Sample Alternative B");
         alternativeDTOs.add(alternativeDTO2);
 
-        questionDTO.setQuestionAlternativeDTOList(alternativeDTOs);
+        questionDTO.setAlternativeDTOList(alternativeDTOs);
 
         return questionDTO;
     }

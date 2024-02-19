@@ -3,12 +3,13 @@ package com.mjv.gamequiz.controllers;
 import com.mjv.gamequiz.dtos.UserDTO;
 import com.mjv.gamequiz.services.UserService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -28,17 +29,6 @@ public class UserController {
     @GetMapping
     public ResponseEntity<List<UserDTO>> findAll() {
         return ResponseEntity.ok().body(userService.findAll());
-    }
-
-    @GetMapping("/{login}/{password}")
-    public ResponseEntity<UserDTO> login(@Valid @PathVariable String login, @Valid @PathVariable String password) {
-       return ResponseEntity.ok().body(userService.findByEmailAndPassword(login, password));
-    }
-
-   @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public void save(@Valid @RequestBody UserDTO dto) {
-        userService.save(dto);
     }
 
 }

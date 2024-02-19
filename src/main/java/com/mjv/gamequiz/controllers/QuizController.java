@@ -2,6 +2,7 @@ package com.mjv.gamequiz.controllers;
 
 import com.mjv.gamequiz.dtos.QuestionDTO;
 import com.mjv.gamequiz.dtos.QuizGameDTO;
+import com.mjv.gamequiz.exceptions.ThemeException;
 import com.mjv.gamequiz.services.QuestionService;
 import com.mjv.gamequiz.services.QuizGameService;
 import com.mjv.gamequiz.services.UserService;
@@ -22,7 +23,7 @@ public class QuizController {
     private final QuizGameService quizGameService;
 
     @GetMapping("/loginByUser/{login}/theme/{theme}")
-    public ResponseEntity<List<QuestionDTO>> findQuestionByUserAndTheme(@PathVariable String login, @PathVariable String theme) {
+    public ResponseEntity<List<QuestionDTO>> findQuestionByUserAndTheme(@PathVariable String login, @PathVariable String theme) throws ThemeException {
         if (!userService.userExists(login)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }

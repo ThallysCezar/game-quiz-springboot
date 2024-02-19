@@ -7,8 +7,6 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 
 import java.io.Serializable;
 
@@ -32,11 +30,6 @@ public class Player implements Serializable {
 
     @NotNull
     private Integer score;
-
-    @NotBlank
-    @NotNull
-    @Column(length = 200, nullable = false)
-    private String theme;
 
     @OneToOne(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
     @JoinColumn(name = "fk_user", referencedColumnName = "id")
