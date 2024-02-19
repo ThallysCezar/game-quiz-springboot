@@ -1,6 +1,7 @@
 package com.mjv.gamequiz.controllers;
 
 import com.mjv.gamequiz.dtos.QuestionDTO;
+import com.mjv.gamequiz.exceptions.ThemeException;
 import com.mjv.gamequiz.services.QuestionService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -32,7 +33,7 @@ public class QuestionController {
     }
 
     @GetMapping("/theme/{themeName}")
-    public List<QuestionDTO> getQuestionsByThemeName(@PathVariable String themeName) {
+    public List<QuestionDTO> getQuestionsByThemeName(@PathVariable String themeName) throws ThemeException {
         return questionService.getQuestionsByTheme(themeName);
     }
 

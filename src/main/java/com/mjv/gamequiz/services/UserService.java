@@ -41,35 +41,6 @@ public class UserService {
                 .orElseThrow(() -> new UserException("Erro ao tentar procurar um usuário"));
     }
 
-    public UserDTO findByEmailAndPassword(String login, String password) {
-        if (StringUtils.isEmpty(login) && StringUtils.isEmpty(password)) {
-            throw new IllegalArgumentException("Os parametros não podem ser nulos, tente novamente.");
-        }
-
-        isValidUser(login, password);
-        return userRepository.findByLoginAndPassword(login, password)
-                .map(userMapper::toDTO)
-                .orElseThrow(() -> new UserException("Erro ao tentar procurar um usuário"));
-    }
-
-    public UserDTO save(UserDTO userDTO) {
-        try {
-            return userMapper.toDTO(userRepository.save(userMapper.toEntity(userDTO)));
-        } catch (UserException exUser) {
-            throw new IllegalArgumentException("Usuário não pode ser nulo.");
-        }
-    }
-
-    public boolean isValidUser(String login, String password){
-        var usuario = new User();
-        usuario.setLogin(login);
-        usuario.setPassword(password);
-        if (Objects.isNull(userRepository.existsByLoginAndPassword(login, password))) {
-            throw new UserException(String.format("Usuário não encontrado com o email: '%s', e password: %s.", login, password));
-        }
-        return true;
-    }
-
 
     public boolean userExists(String login) {
         if (StringUtils.isEmpty(login)) {

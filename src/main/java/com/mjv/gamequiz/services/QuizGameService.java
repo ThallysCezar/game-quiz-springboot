@@ -27,7 +27,7 @@ public class QuizGameService {
         Question question = questionRepository.findById(quizGameDTO.getQuestionId())
                 .orElseThrow(() -> new QuestionException("Questão não encontrada com o ID fornecido: " + quizGameDTO.getQuestionId()));
 
-        return Objects.equals(question.getCorrectQuestionAlternativeID(), quizGameDTO.getChosenAlternativeId());
+        return Objects.equals(question.getCorrectAlternativeID(), quizGameDTO.getChosenAlternativeId());
     }
 
     public PlayerDTO updatePlayerScore(String nickName, int scoreIncrement) {

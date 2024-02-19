@@ -14,20 +14,20 @@ import java.util.List;
 public class QuestionDTO {
 
     private Long id;
-    private String theme;
-    private String question;
+    private ThemeDTO theme;
+    private String answer;
     private String response;
-    private Long correctQuestionAlternativeID;
-    private List<QuestionAlternativeDTO> questionAlternativeDTOList;
+    private Long correctAlternativeID;
+    private List<AlternativeDTO> alternativeDTOList;
 
     @Override
     public String toString() {
         return "\n\nQuestionDTO:" +
                 "\nid = " + id +
                 "\ntheme = " + theme +
-                "\nquestion = " + question +
+                "\nanswer = " + answer +
                 "\nresponse = " + response +
-                "\ncorrectQuestionAlternativeID = " + correctQuestionAlternativeID +
-                "\nquestionAlternativeDTOArrayList = " + questionAlternativeDTOList;
+                "\ncorrectAlternativeID = " + correctAlternativeID +
+                "\nalternativeDTOList = " + alternativeDTOList;
     }
 }

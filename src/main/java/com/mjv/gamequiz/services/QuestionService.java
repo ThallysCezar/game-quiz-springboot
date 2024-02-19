@@ -2,9 +2,12 @@ package com.mjv.gamequiz.services;
 
 import com.mjv.gamequiz.builders.QuestionMapper;
 import com.mjv.gamequiz.domains.Question;
+import com.mjv.gamequiz.domains.Theme;
 import com.mjv.gamequiz.dtos.QuestionDTO;
 import com.mjv.gamequiz.exceptions.QuestionException;
+import com.mjv.gamequiz.exceptions.ThemeException;
 import com.mjv.gamequiz.repositories.QuestionRepository;
+import com.mjv.gamequiz.repositories.ThemeRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,6 +22,7 @@ public class QuestionService {
 
     private final QuestionRepository questionRepository;
     private final QuestionMapper questionMapper;
+    private final ThemeRepository themeRepository;
 
     public Page<QuestionDTO> findAll(Pageable pageable) {
         Page<Question> questions = questionRepository.findAll(pageable);
@@ -59,9 +63,14 @@ public class QuestionService {
         }
     }
 
-    public List<QuestionDTO> getQuestionsByTheme(String theme) {
+
+    public List<QuestionDTO> getQuestionsByTheme(String themeName) {
         try {
-            return questionMapper.toListDTO(questionRepository.findByTheme(theme));
+            List<Question> questions = questionRepository.findByThemeName(themeName);
+            if(questions.isEmpty()){
+                throw new QuestionException("Nenhuma QuestionDTO encontrada para o tema: " + themeName);
+            }
+            return questionMapper.toListDTO(questions);
         } catch (Exception ex) {
             throw new QuestionException("Erro ao procurar por tema de questões.");
         }
