@@ -33,6 +33,7 @@ Bem-vindo ao GameQuiz! Este é um projeto de quiz de perguntas e respostas desen
    psql -U postgres
    CREATE DATABASE gamequiz;
    ```
+   
    Substitua 'postgres' pelo seu nome de usuário do PostgreSQL, se necessário.
 3. Configuração do Flyway: O Flyway é uma ferramenta de migração de banco de dados que permite gerenciar e versionar alterações em seu banco de dados. Certifique-se de ter o Flyway instalado e configurado em seu projeto. O arquivo flyway.conf contém as configurações para o Flyway, incluindo o nome do banco de dados. Certifique-se de alterar ou criar um banco de dados com o mesmo nome especificado no flyway.conf.
    - Execute o comando depois da criação do banco de dados, via Flyway:
@@ -51,7 +52,7 @@ Bem-vindo ao GameQuiz! Este é um projeto de quiz de perguntas e respostas desen
    ```
    Certifique-se de substituir 'seu_usuario' e 'sua_senha' pelo seu nome de usuário e senha do PostgreSQL, respectivamente. O URL jdbc também pode precisar ser ajustado dependendo da configuração do seu PostgreSQL.
    
-6. Teste de Conexão: Após configurar tudo, reinicie seu aplicativo Spring Boot e verifique se ele consegue se conectar ao banco de dados PostgreSQL corretamente.
+6. Teste de Conexão: Após configurar tudo, reinicie seu aplicativo Spring Boot e verifique se ele consegue se conectar ao banco de dados PostgreSQL corretamente
     
 ## Documentação da API
 - QuestionController
@@ -269,7 +270,7 @@ Bem-vindo ao GameQuiz! Este é um projeto de quiz de perguntas e respostas desen
 ```JSON
  {
       "login": "robson@hotmail.com",
-      "password": "123456789",
+      "password": "password",
       "role": "USER"
 }
 ```
@@ -346,10 +347,10 @@ A documentação completa da API pode ser encontrada no Swagger também. Para ac
 Para acessar os endpoints protegidos, é necessário autenticar-se usando JWT. Siga as instruções abaixo para autenticar-se:
 
 1. Faça uma solicitação POST para /authenticate com as credenciais de login no corpo da solicitação. Aqui estão as credenciais de login:
-   - 'thallys@hotmail.com', senha: '123456789'
-   - 'samuel@hotmail.com', senha: '123456789'
-   - 'bianca@hotmail.com', senha: '123456789'
-   - 'robson@hotmail.com', senha: '123456789'
+   - 'thallys@hotmail.com', senha: 'password'
+   - 'samuel@hotmail.com', senha: 'password'
+   - 'bianca@hotmail.com', senha: 'password'
+   - 'robson@hotmail.com', senha: 'password'
 2. Você receberá um token JWT como resposta.
 3. Copie o token JWT recebido.
 4. Abra o Swagger e clique no botão "Authorize" no canto superior direito.
@@ -401,4 +402,3 @@ Este projeto foi desenvolvido como parte do curso da School MJV de Java. Ele ser
 Contribuições são sempre bem-vindas!
 
 Se você encontrar problemas ou tiver sugestões de melhorias, sinta-se à vontade para abrir um problema ou enviar uma solicitação pull.
-

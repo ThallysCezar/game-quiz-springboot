@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 
 @Service
 @AllArgsConstructor
@@ -74,6 +75,19 @@ public class QuestionService {
         } catch (Exception ex) {
             throw new QuestionException("Erro ao procurar por tema de questões.");
         }
+    }
+
+    public QuestionDTO getRandomQuestionByTheme(String themeName) {
+        List<Question> questions = questionRepository.findByThemeName(themeName);
+        if (questions.isEmpty()) {
+            throw new QuestionException("Nenhuma QuestionDTO encontrada para o tema: " + themeName);
+        }
+
+        Random random = new Random();
+        int randomIndex = random.nextInt(questions.size());
+        Question randomQuestion = questions.get(randomIndex);
+
+        return questionMapper.toDTO(randomQuestion);
     }
 
 }
