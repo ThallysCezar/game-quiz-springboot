@@ -11,8 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
-
 @RestController
 @RequestMapping("/game-quiz")
 @AllArgsConstructor
@@ -23,12 +21,12 @@ public class QuizController {
     private final QuizGameService quizGameService;
 
     @GetMapping("/loginByUser/{login}/theme/{theme}")
-    public ResponseEntity<List<QuestionDTO>> findQuestionByUserAndTheme(@PathVariable String login, @PathVariable String theme) throws ThemeException {
+    public ResponseEntity<QuestionDTO> findQuestionByUserAndTheme(@PathVariable String login, @PathVariable String theme) throws ThemeException {
         if (!userService.userExists(login)) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
         }
 
-        List<QuestionDTO> questions = questionService.getQuestionsByTheme(theme);
+        QuestionDTO questions = questionService.getRandomQuestionByTheme(theme);
         return ResponseEntity.ok(questions);
     }
 

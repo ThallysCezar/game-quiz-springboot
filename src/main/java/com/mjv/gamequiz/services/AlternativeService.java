@@ -34,7 +34,7 @@ public class AlternativeService {
         if (Objects.isNull(id)) {
             throw new IllegalArgumentException("O ID não pode ser nulo, tente novamente.");
         }
-        if (alternativeRepository.existsById(id)) {
+        if (!alternativeRepository.existsById(id)) {
             throw new AlternativeException(String.format("Alternativa não encontrada com o id '%s'.", id));
 
         }
@@ -45,10 +45,10 @@ public class AlternativeService {
 
     public List<AlternativeDTO> findByQuestionId(Long questionId) {
         List<Alternative> alternativeList = alternativeRepository.findByQuestionId(questionId);
-        if (Objects.isNull(alternativeList)) {
+        if (Objects.isNull(alternativeList) || alternativeList.isEmpty()) {
             throw new IllegalArgumentException("O ID da questão não pode ser nulo, tente novamente.");
         }
-        if (alternativeRepository.existsById(questionId)) {
+        if (!alternativeRepository.existsById(questionId)) {
             throw new AlternativeException(String.format("Questão não encontrada com o id '%s'.", questionId));
 
         }

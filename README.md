@@ -33,7 +33,7 @@ Bem-vindo ao GameQuiz! Este é um projeto de quiz de perguntas e respostas desen
    psql -U postgres
    CREATE DATABASE gamequiz;
    ```
-    Substitua 'postgres' pelo seu nome de usuário do PostgreSQL, se necessário.
+Substitua 'postgres' pelo seu nome de usuário do PostgreSQL, se necessário.
 3. Configuração do Spring Boot: Agora que o banco de dados está pronto, você precisa configurar seu projeto Spring Boot para usar o PostgreSQL. No application.properties:
 ```properties
 # PostgreSQL
@@ -262,7 +262,7 @@ spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
 ```JSON
  {
       "login": "robson@hotmail.com",
-      "password": "123456789",
+      "password": "password",
       "role": "USER"
 }
 ```
@@ -339,10 +339,10 @@ A documentação completa da API pode ser encontrada no Swagger também. Para ac
 Para acessar os endpoints protegidos, é necessário autenticar-se usando JWT. Siga as instruções abaixo para autenticar-se:
 
 1. Faça uma solicitação POST para /authenticate com as credenciais de login no corpo da solicitação. Aqui estão as credenciais de login:
-   - 'thallys@hotmail.com', senha: '123456789'
-   - 'samuel@hotmail.com', senha: '123456789'
-   - 'bianca@hotmail.com', senha: '123456789'
-   - 'robson@hotmail.com', senha: '123456789'
+   - 'thallys@hotmail.com', senha: 'password'
+   - 'samuel@hotmail.com', senha: 'password'
+   - 'bianca@hotmail.com', senha: 'password'
+   - 'robson@hotmail.com', senha: 'password'
 2. Você receberá um token JWT como resposta.
 3. Copie o token JWT recebido.
 4. Abra o Swagger e clique no botão "Authorize" no canto superior direito.
@@ -355,8 +355,6 @@ OBS: Os usuários têm duas roles: ADMIN e USER. Apenas o usuário com o email '
 
 Divirta-se explorando a API!
 
-
-
 ## Contexto do Projeto
 
 Este projeto foi desenvolvido como parte do curso da School MJV de Java. Ele serviu como uma oportunidade para revisar conceitos básicos de Java com Spring Boot, explorando a criação de APIs RESTful, manipulação de banco de dados e interações entre entidades. Se você encontrar problemas ou tiver sugestões de melhoria, sinta-se à vontade para abrir uma issue ou enviar um pull request. Divirta-se explorando e desenvolvendo!
@@ -367,4 +365,3 @@ Este projeto foi desenvolvido como parte do curso da School MJV de Java. Ele ser
 Contribuições são sempre bem-vindas!
 
 Se você encontrar problemas ou tiver sugestões de melhorias, sinta-se à vontade para abrir um problema ou enviar uma solicitação pull.
-

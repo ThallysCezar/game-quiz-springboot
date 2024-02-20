@@ -3,7 +3,9 @@ package com.mjv.gamequiz.services;
 import com.mjv.gamequiz.builders.QuestionMapper;
 import com.mjv.gamequiz.domains.Question;
 import com.mjv.gamequiz.domains.Alternative;
+import com.mjv.gamequiz.domains.Theme;
 import com.mjv.gamequiz.dtos.QuestionDTO;
+import com.mjv.gamequiz.dtos.ThemeDTO;
 import com.mjv.gamequiz.exceptions.QuestionException;
 import com.mjv.gamequiz.factories.QuestionFactory;
 import com.mjv.gamequiz.repositories.QuestionRepository;
@@ -223,5 +225,39 @@ public class QuestionServiceTest {
         Mockito.verify(repository, Mockito.times(1)).findByThemeName(themeName);
         Assertions.assertEquals("Erro ao procurar por tema de questões.", excecao.getMessage());
     }
+
+    @Test
+    @DisplayName("Deve retornar uma questão randomica por tema")
+    void deveRetornarUmaQuestaoRandomicaPorTema() {
+        String themeName = "Cinema";
+        final var questionDTO = QuestionFactory.createValidQuestionDTO();
+        ThemeDTO theme = new ThemeDTO();
+        theme.setTheme(themeName);
+        final var questionEntity = QuestionFactory.createValidQuestion();
+        questionDTO.setTheme(theme);
+
+        Mockito.when(repository.findByThemeName(themeName)).thenReturn(List.of(questionEntity));
+        Mockito.when(mapper.toDTO(questionEntity)).thenReturn(questionDTO);
+
+        QuestionDTO retorno = sut.getRandomQuestionByTheme(theme.getTheme());
+
+        Assertions.assertEquals(themeName, retorno.getTheme().getTheme());
+        Mockito.verify(repository, Mockito.times(1)).findByThemeName(themeName);
+        Mockito.verify(mapper, Mockito.times(1)).toDTO(questionEntity);
+    }
+
+    @Test
+    @DisplayName("Deve lançar QuestionException quando houver erro ao tentar buscar uma questão randomica por tema")
+    void deveLancarQuestionExceptionAoBuscarUmaQuestoesRandomicaPorTema() {
+        String themeName = "Tema questão";
+        Mockito.when(repository.findByThemeName(themeName)).thenReturn(Collections.emptyList());
+
+        final var excecao = Assertions.assertThrows(QuestionException.class, () ->
+                sut.getRandomQuestionByTheme(themeName));
+
+        Mockito.verify(repository, Mockito.times(1)).findByThemeName(themeName);
+        Assertions.assertEquals("Nenhuma QuestionDTO encontrada para o tema: " + themeName, excecao.getMessage());
+    }
+
 
 }
