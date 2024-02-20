@@ -305,15 +305,7 @@ Bem-vindo ao GameQuiz! Este é um projeto de quiz de perguntas e respostas desen
 | `login`      | `String` | **Obrigatório**. O login(email) do user que você quer verificar. |
 | `theme`      | `String` | **Obrigatório**. O questões por tema que você quer recuperar.    |
 
-### Game-Quiz
-- Endpoint, que o jogo se basea:
-  - Coloca o id da questão(o qual recuperou no endpoint de antes)
-    - OBS: cada questão tem 8 alternativas.
-  - Coloca a alternative que você acha que é a correta
-  - Coloca o nickname do seu jogador:
-     - Jogador acertou: receberá 100 pontos de scores,
-     - senão, não ganhará nada.
-
+### Game-Quiz, onde o jogo irá funcionar.
 ```http
   POST /game-quiz/answer
 ```
@@ -324,11 +316,19 @@ Bem-vindo ao GameQuiz! Este é um projeto de quiz de perguntas e respostas desen
       "nickName": "Samuca"
   }
 ```
+| Parâmetro   | Tipo       | Descrição                                                        |
+| :---------- | :--------- |:-----------------------------------------------------------------|
+| `questionId`    | `Long` | **Obrigatório**. Id da questão. |
+| `chosenAlternativeId`    | `Long` | **Obrigatório**. Id da alternativa, o qual você acha que é a certa.    |
+| `nickName`      | `String` | **Obrigatório**. Nickname do player, caso acerte será acrescentado score.    |
+
 - Nicknames:
   - "Thays"
   - "Samuca"
   - "Robinho"
   - "BiaBia"
+ 
+Observação: Certifique  de estar autenticado e de posse do token de verificação para fazer a requisição dos endpoints, ou irá mostrar que você não tem acesso, 403 Forbidden.
 
 ### Documentação com Swagger
 A documentação completa da API pode ser encontrada no Swagger também. Para acessar a documentação, siga as etapas abaixo:
@@ -362,12 +362,39 @@ OBS: Os usuários têm duas roles: ADMIN e USER. Apenas o usuário com o email '
 
 Divirta-se explorando a API!
 
+## Como o jogo funciona
+Para começar a jogar, siga os passos abaixo:
+1. Autenticação
+    - Faça login com seu usuário e senha em:
+        ```http
+            POST /auth/login
+        ```
+    - Esta requisição retornará um token de autenticação que deve ser usado nas próximas requisições.
 
+2. Obtenção de Questão Aleatória por Tema:
+    - Após estar em posse do token para autenticação, utilize o endpoint abaixo para obter uma questão aleatória com base no tema escolhido:
+        ```http
+            GET /game-quiz/{login}/{theme}
+        ```
+    - Este endpoint retorna a questão com suas alternativas.
 
-## Contexto do Projeto
+3. Envio da Resposta da Questão:
+    - Após obter a questão, envie sua resposta utilizando o endpoint:
+        ```http
+            POST /game-quiz/answer
+        ```
+    - Se a resposta estiver correta, o jogador receberá 100 pontos de score.
+
+4. Consulta do Ranking de Jogadores:
+    - Para visualizar o ranking dos jogadores com as maiores pontuações, utilize o endpoint:
+        ```http
+            GET /ranking-players
+        ```
+Observação: As questões são geradas aleatoriamente com base no tema escolhido. Caso tenha dificuldades para acessar os endpoints fornecidos, consulte como deve ser usado cada endpoint na documentação da API.
+
+## Sobre o projeto
 
 Este projeto foi desenvolvido como parte do curso da School MJV de Java. Ele serviu como uma oportunidade para revisar conceitos básicos de Java com Spring Boot, explorando a criação de APIs RESTful, manipulação de banco de dados e interações entre entidades. Se você encontrar problemas ou tiver sugestões de melhoria, sinta-se à vontade para abrir uma issue ou enviar um pull request. Divirta-se explorando e desenvolvendo!
-
 
 ## Contribuindo
 
