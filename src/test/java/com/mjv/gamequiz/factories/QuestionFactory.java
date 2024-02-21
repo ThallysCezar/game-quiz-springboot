@@ -61,4 +61,35 @@ public class QuestionFactory {
 
         return questionDTO;
     }
+
+    public static List<QuestionDTO> createQuestionDTOList(int size) {
+        List<QuestionDTO> questions = new ArrayList<>();
+        for (int i = 0; i < size; i++) {
+            questions.add(createQuestionDTO(i));
+        }
+        return questions;
+    }
+
+    public static QuestionDTO createQuestionDTO(int index) {
+        QuestionDTO question = new QuestionDTO();
+        question.setId((long) index);
+
+        final var theme = new ThemeDTO();
+        theme.setTheme("Cinema");
+        question.setTheme(theme);
+        question.setAlternativeDTOList(createAlternatives());
+        return question;
+    }
+
+    public static List<AlternativeDTO> createAlternatives() {
+        List<AlternativeDTO> alternatives = new ArrayList<>();
+        char letter = 'A';
+        for (int i = 0; i < 4; i++) {
+            AlternativeDTO alternative = new AlternativeDTO();
+            alternative.setId((long) i);
+            alternative.setContent("Alternative " + letter++);
+            alternatives.add(alternative);
+        }
+        return alternatives;
+    }
 }
