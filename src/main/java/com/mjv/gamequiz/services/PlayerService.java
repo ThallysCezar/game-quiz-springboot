@@ -5,7 +5,8 @@ import com.mjv.gamequiz.builders.UserMapper;
 import com.mjv.gamequiz.domains.Player;
 import com.mjv.gamequiz.domains.User;
 import com.mjv.gamequiz.dtos.PlayerDTO;
-import com.mjv.gamequiz.exceptions.PlayerException;
+import com.mjv.gamequiz.exceptions.Player.PlayerException;
+import com.mjv.gamequiz.exceptions.Player.PlayerNotFoundException;
 import com.mjv.gamequiz.repositories.PlayerRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -24,7 +25,7 @@ public class PlayerService {
     public List<PlayerDTO> findAll() {
         List<Player> players = playerRepository.findAll();
         if (players.isEmpty()) {
-            throw new PlayerException("Nenhum player encontrado");
+            throw new PlayerNotFoundException("Nenhum player encontrado");
         }
 
         return playerMapper.toListDTO(players);
@@ -35,7 +36,7 @@ public class PlayerService {
             throw new IllegalArgumentException("O ID não pode ser nulo, tente novamente.");
         }
         if (!playerRepository.existsById(id)) {
-            throw new PlayerException(String.format("Player não encontrado com o id '%s'.", id));
+            throw new PlayerNotFoundException(String.format("Player não encontrado com o id '%s'.", id));
         }
 
         return playerRepository.findById(id)
@@ -46,7 +47,7 @@ public class PlayerService {
     public PlayerDTO updatePlayer(PlayerDTO playerDTO) {
         try {
             Player existingPlayer = playerRepository.findById(playerDTO.getId())
-                    .orElseThrow(() -> new PlayerException("Jogador não encontrado com ID: " + playerDTO.getId()));
+                    .orElseThrow(() -> new PlayerNotFoundException("Jogador não encontrado com ID: " + playerDTO.getId()));
 
             User user = userMapper.toEntity(playerDTO.getUser());
             existingPlayer.setUser(user);
@@ -70,7 +71,7 @@ public class PlayerService {
             throw new IllegalArgumentException("O ID não pode ser nulo, tente novamente.");
         }
         if (!playerRepository.existsById(id)) {
-            throw new PlayerException(String.format("Player não encontrado com o id '%s'.", id));
+            throw new PlayerNotFoundException(String.format("Player não encontrado com o id '%s'.", id));
         }
         playerRepository.deleteById(id);
     }

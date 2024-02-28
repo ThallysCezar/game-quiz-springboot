@@ -3,7 +3,8 @@ package com.mjv.gamequiz.services;
 import com.mjv.gamequiz.builders.UserMapper;
 import com.mjv.gamequiz.domains.User;
 import com.mjv.gamequiz.dtos.UserDTO;
-import com.mjv.gamequiz.exceptions.UserException;
+import com.mjv.gamequiz.exceptions.User.UserException;
+import com.mjv.gamequiz.exceptions.User.UserNotFoundException;
 import com.mjv.gamequiz.repositories.UserRepository;
 import lombok.AllArgsConstructor;
 import org.apache.commons.lang3.StringUtils;
@@ -22,7 +23,7 @@ public class UserService {
     public List<UserDTO> findAll() {
         List<User> users = userRepository.findAll();
         if (users.isEmpty()) {
-            throw new UserException("Nenhum usuário encontrado.");
+            throw new UserNotFoundException("Nenhum usuário encontrado.");
         }
 
         return userMapper.toListDTO(users);
@@ -33,7 +34,7 @@ public class UserService {
             throw new IllegalArgumentException("O ID não pode ser nulo, tente novamente.");
         }
         if (!userRepository.existsById(id)) {
-            throw new UserException(String.format("Usuário não encontrado com o id '%s'.", id));
+            throw new UserNotFoundException(String.format("Usuário não encontrado com o id '%s'.", id));
         }
 
         return userRepository.findUserById(id)
@@ -46,10 +47,7 @@ public class UserService {
         if (StringUtils.isEmpty(login)) {
             throw new IllegalArgumentException("O usuário não pode ser nulo, tente novamente.");
         }
-        if(!userRepository.existsByLogin(login)){
-            return false;
-        }
-        return true;
+        return !Boolean.FALSE.equals(userRepository.existsByLogin(login));
     }
 
 }

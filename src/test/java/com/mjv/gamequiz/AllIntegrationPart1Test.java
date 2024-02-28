@@ -8,7 +8,6 @@ import org.junit.platform.suite.api.SuiteDisplayName;
 import org.junit.runner.RunWith;
 
 @Suite
-@RunWith(JUnitPlatform.class)
 @SelectClasses({
         UserControllerIT.class,
         PlayerControllerIT.class,

@@ -13,16 +13,19 @@ import java.util.stream.Collectors;
 public class QuestionMapper {
 
     private final ModelMapper modelMapper;
-    private final AlternativeMapper alternativeMapper;
+    private final QuestionChoicesMapper questionChoicesMapper;
+    private final ThemeMapper themeMapper;
 
-    public QuestionMapper(ModelMapper modelMapper, AlternativeMapper alternativeMapper) {
+    public QuestionMapper(ModelMapper modelMapper, QuestionChoicesMapper alternativeMapper, ThemeMapper themeMapper) {
         this.modelMapper = modelMapper;
-        this.alternativeMapper = alternativeMapper;
+        this.questionChoicesMapper = alternativeMapper;
+        this.themeMapper = themeMapper;
     }
 
     public QuestionDTO toDTO(Question entity) {
         QuestionDTO dto = modelMapper.map(entity, QuestionDTO.class);
-        dto.setAlternativeDTOList(alternativeMapper.toListDTO(entity.getAlternativeList()));
+        dto.setAlternativeDTOList(questionChoicesMapper.toListDTO(entity.getAlternativeList()));
+        dto.setTheme(themeMapper.toDTO(entity.getTheme()));
         return dto;
     }
 

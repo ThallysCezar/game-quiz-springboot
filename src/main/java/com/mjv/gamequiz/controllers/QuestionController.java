@@ -1,7 +1,6 @@
 package com.mjv.gamequiz.controllers;
 
 import com.mjv.gamequiz.dtos.QuestionDTO;
-import com.mjv.gamequiz.exceptions.ThemeException;
 import com.mjv.gamequiz.services.QuestionService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
@@ -10,6 +9,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -23,6 +23,7 @@ public class QuestionController {
     private final QuestionService questionService;
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<QuestionDTO> findById(@Valid @PathVariable Long id) {
         return ResponseEntity.ok().body(questionService.findById(id));
     }
@@ -33,11 +34,12 @@ public class QuestionController {
     }
 
     @GetMapping("/theme/{themeName}")
-    public List<QuestionDTO> getQuestionsByThemeName(@PathVariable String themeName) throws ThemeException {
+    public List<QuestionDTO> getQuestionsByThemeName(@PathVariable String themeName) {
         return questionService.getQuestionsByTheme(themeName);
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @ResponseStatus(HttpStatus.CREATED)
     public void save(@Valid @RequestBody QuestionDTO questionDTO) {
         questionService.save(questionDTO);

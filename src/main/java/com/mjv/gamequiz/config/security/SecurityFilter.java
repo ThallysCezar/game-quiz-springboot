@@ -27,13 +27,13 @@ public class SecurityFilter extends OncePerRequestFilter {
     @Autowired
     UserRepository userRepository;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest()
-                        .permitAll())
-                .csrf(AbstractHttpConfigurer::disable);
-        return http.build();
-    }
+//    @Bean
+//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+//        http.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest()
+//                        .permitAll())
+//                .csrf(AbstractHttpConfigurer::disable);
+//        return http.build();
+//    }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)

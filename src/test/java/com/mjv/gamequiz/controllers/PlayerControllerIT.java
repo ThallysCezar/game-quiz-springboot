@@ -2,7 +2,6 @@ package com.mjv.gamequiz.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.mjv.gamequiz.dtos.PlayerDTO;
-import com.mjv.gamequiz.dtos.QuestionDTO;
 import com.mjv.gamequiz.factories.PlayerFactory;
 import com.mjv.gamequiz.services.PlayerService;
 import org.junit.jupiter.api.DisplayName;
@@ -17,7 +16,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 
 @SpringBootTest

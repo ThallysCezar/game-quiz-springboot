@@ -2,11 +2,10 @@ package com.mjv.gamequiz.services;
 
 import com.mjv.gamequiz.builders.QuestionMapper;
 import com.mjv.gamequiz.domains.Question;
-import com.mjv.gamequiz.domains.Alternative;
-import com.mjv.gamequiz.domains.Theme;
+import com.mjv.gamequiz.domains.QuestionChoices;
 import com.mjv.gamequiz.dtos.QuestionDTO;
 import com.mjv.gamequiz.dtos.ThemeDTO;
-import com.mjv.gamequiz.exceptions.QuestionException;
+import com.mjv.gamequiz.exceptions.Question.QuestionException;
 import com.mjv.gamequiz.factories.QuestionFactory;
 import com.mjv.gamequiz.repositories.QuestionRepository;
 import com.mjv.gamequiz.repositories.ThemeRepository;
@@ -21,8 +20,6 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 
 import java.util.*;
-
-import static org.mockito.ArgumentMatchers.eq;
 
 @DisplayName("Service de Question")
 public class QuestionServiceTest {
@@ -84,7 +81,7 @@ public class QuestionServiceTest {
         question1.setId(1L);
         question1.setAnswer("Texto da questão 1");
 
-        List<Alternative> alternatives1 = Arrays.asList(new Alternative(), new Alternative());
+        List<QuestionChoices> alternatives1 = Arrays.asList(new QuestionChoices(), new QuestionChoices());
         question1.setAlternativeList(alternatives1);
 
         List<Question> questions = Arrays.asList(question1);

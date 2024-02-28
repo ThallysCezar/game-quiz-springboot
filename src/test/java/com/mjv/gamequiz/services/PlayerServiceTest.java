@@ -4,7 +4,7 @@ import com.mjv.gamequiz.builders.PlayerMapper;
 import com.mjv.gamequiz.builders.UserMapper;
 import com.mjv.gamequiz.domains.Player;
 import com.mjv.gamequiz.dtos.PlayerDTO;
-import com.mjv.gamequiz.exceptions.PlayerException;
+import com.mjv.gamequiz.exceptions.Player.PlayerException;
 import com.mjv.gamequiz.factories.PlayerFactory;
 import com.mjv.gamequiz.factories.UserFactory;
 import com.mjv.gamequiz.repositories.PlayerRepository;
@@ -115,7 +115,7 @@ public class PlayerServiceTest {
 
     @Test
     @DisplayName("Deve retornar player atualizado")
-    public void deveRetornarPlayerAtualizado() {
+    void deveRetornarPlayerAtualizado() {
         final var playerDTO = PlayerFactory.createValidPlayerDTO();
         final var playerEntity = PlayerFactory.createValidPlayer();
         final var userEntity = UserFactory.createUser(1);
@@ -134,10 +134,8 @@ public class PlayerServiceTest {
 
     @Test
     @DisplayName("Deve lançar PlayerException ao atualizar player sem id")
-    public void deveLancarPlayerExceptionAoTentarAtualizarPlayerSemId() {
+    void deveLancarPlayerExceptionAoTentarAtualizarPlayerSemId() {
         final var playerDTO = PlayerFactory.createValidPlayerDTO();
-
-        final Long id = null;
         Mockito.when(repository.findById(null)).thenThrow(new PlayerException("Erro ao atualizar o player."));
 
         final var excecao = Assertions.assertThrows(PlayerException.class, () ->
@@ -182,7 +180,7 @@ public class PlayerServiceTest {
 
     @Test
     @DisplayName("Deve deletar um player com sucesso")
-    public void deveDeletarUmPlayer() {
+    void deveDeletarUmPlayer() {
         final var id = 1L;
         final var playerEntity = new Player();
         playerEntity.setId(id);
@@ -201,7 +199,7 @@ public class PlayerServiceTest {
 
     @Test
     @DisplayName("Deve lançar PlayerException quando houver erro ao tentar salvar deletar")
-    public void testDeletePlayerWithNullId() {
+    void testDeletePlayerWithNullId() {
         final Long id = null;
         Mockito.when(repository.findById(null)).thenThrow(new IllegalArgumentException("O ID não pode ser nulo, tente novamente."));
 
@@ -213,7 +211,7 @@ public class PlayerServiceTest {
 
     @Test
     @DisplayName("Deve lançar PlayerException quando houver erro ao tentar salvar player que não existe")
-    public void testDeletePlayerWithNonExistingId() {
+    void testDeletePlayerWithNonExistingId() {
         final Long id = 9999L;
         Mockito.when(repository.existsById(id)).thenReturn(false);
 

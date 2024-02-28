@@ -15,7 +15,6 @@ import org.junit.runner.RunWith;
         RankingTopServiceTest.class,
         QuizGameServiceTest.class
 })
-@RunWith(JUnitPlatform.class)
 @SuiteDisplayName("Conjunto de todos os testes unitários")
 public class AllUnitServicesTest {
 }

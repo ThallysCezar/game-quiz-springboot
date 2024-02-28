@@ -3,7 +3,7 @@ package com.mjv.gamequiz.services;
 import com.mjv.gamequiz.builders.UserMapper;
 import com.mjv.gamequiz.domains.User;
 import com.mjv.gamequiz.dtos.UserDTO;
-import com.mjv.gamequiz.exceptions.UserException;
+import com.mjv.gamequiz.exceptions.User.UserException;
 import com.mjv.gamequiz.repositories.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -50,9 +50,6 @@ public class UserServiceTest {
     @Test
     @DisplayName("Deve lançar UserException quando houver erro ao procurar todas as questões por paginas")
     void deveLancarUserExceptionErroAoTodosUsuarios() {
-        List<User> userList = Arrays.asList(new User(), new User());
-        List<UserDTO> userListDTO = Arrays.asList(new UserDTO(), new UserDTO());
-
         Mockito.when(repository.findAll()).thenReturn(Collections.emptyList());
 
         final var excecao = Assertions.assertThrows(UserException.class, () ->
