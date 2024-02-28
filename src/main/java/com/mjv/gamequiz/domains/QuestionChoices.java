@@ -4,28 +4,23 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-import java.io.Serializable;
-
-@Getter
-@Setter
+@SequenceGenerator(name = "t_question_choices_seq", allocationSize = 1)
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "t_question_alternative")
-public class QuestionAlternative implements Serializable {
-    private static final long serialVersionUID = 1L;
+@Table(name = "t_question_choices")
+public class QuestionChoices {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_question_choices_seq")
     private Long id;
 
     @NotBlank
     @NotNull
-    @Column(length = 200, nullable = false)
     private String alternative;
 
     @NotBlank
@@ -35,7 +30,7 @@ public class QuestionAlternative implements Serializable {
     @NotBlank
     @NotNull
     @Column(length = 200, nullable = false)
-    private String reference;
+    private String content;
 
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)

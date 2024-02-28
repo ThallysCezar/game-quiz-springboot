@@ -9,10 +9,6 @@ import java.util.List;
 
 public class UserFactory {
 
-    public static UserDTO createValidUserDTO() {
-        return createUserDTO(1);
-    }
-
     public static List<UserDTO> createUserDTOs(int size) {
         List<UserDTO> userDTOs = new ArrayList<>();
         for (int i = 0; i < size; i++) {
@@ -23,14 +19,6 @@ public class UserFactory {
 
     public static UserDTO createUserDTO(int index) {
         return new UserDTO((long) index, "user" + index, "password" + index, UserRole.USER);
-    }
-
-    public static List<User> createUsers(int size) {
-        List<User> users = new ArrayList<>();
-        for (int i = 0; i < size; i++) {
-            users.add(createUser(i));
-        }
-        return users;
     }
 
     public static User createUser(int index) {

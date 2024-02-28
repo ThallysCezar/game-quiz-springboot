@@ -2,32 +2,29 @@ package com.mjv.gamequiz.domains;
 
 import com.mjv.gamequiz.domains.enums.UserRole;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import org.hibernate.annotations.JdbcTypeCode;
-import org.hibernate.type.SqlTypes;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 
-@Getter
-@Setter
+@SequenceGenerator(name = "t_user_seq", allocationSize = 1)
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "t_user")
 public class User implements UserDetails {
-    private static final long serialVersionUID = 1L;
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_user_seq")
     private Long id;
 
     @NotBlank

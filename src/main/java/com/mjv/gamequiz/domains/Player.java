@@ -4,23 +4,19 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-import java.io.Serializable;
-
-@Getter
-@Setter
+@SequenceGenerator(name = "t_player_seq", allocationSize = 1)
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 @Table(name = "t_player")
-public class Player implements Serializable {
-    private static final long serialVersionUID = 1L;
+public class Player {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "t_player_seq")
     private Long id;
 
     @NotBlank

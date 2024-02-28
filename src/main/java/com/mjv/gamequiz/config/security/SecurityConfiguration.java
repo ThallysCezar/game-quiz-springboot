@@ -7,7 +7,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -33,7 +32,11 @@ public class SecurityConfiguration {
             "/webjars/**",
             // -- Swagger UI v3 (OpenAPI)
             "/v3/api-docs/**",
-            "/swagger-ui/**"
+            "/swagger-ui/**",
+            "/actuator/**",
+            "/actuator/health",
+            "/actuator/metrics",
+            "/actuator/info"
             // other public endpoints of your API may be appended to this array
     };
 
@@ -47,8 +50,10 @@ public class SecurityConfiguration {
                         .requestMatchers(HttpMethod.POST, "/game-quiz").permitAll()
                         .requestMatchers(HttpMethod.GET, "/player").permitAll()
                         .requestMatchers(HttpMethod.POST, "/question").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/question/{id}").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/users").hasRole("ADMIN")
-                        .requestMatchers(HttpMethod.POST, "/questionsAlternatives").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.POST, "/question-choices").hasRole("ADMIN")
+                        .requestMatchers(HttpMethod.GET, "/question-choices/{id}").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/update").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.PUT, "/update").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.DELETE, "/delete").hasRole("ADMIN")

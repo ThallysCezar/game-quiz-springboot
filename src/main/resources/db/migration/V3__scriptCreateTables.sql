@@ -32,7 +32,7 @@ CREATE TABLE IF NOT EXISTS public.t_question
         ON DELETE NO ACTION
 );
 
--- Criando a tabela de alternativas
+-- Criando a tabela de alternativas, questionChoices
 CREATE TABLE IF NOT EXISTS public.t_question_choices
 (
     id bigint NOT NULL,

@@ -1,13 +1,12 @@
 package com.mjv.gamequiz.services;
 
-import com.mjv.gamequiz.builders.PlayerMapper;
+import com.mjv.gamequiz.mappers.PlayerMapper;
 import com.mjv.gamequiz.domains.Player;
 import com.mjv.gamequiz.domains.Question;
-import com.mjv.gamequiz.domains.User;
-import com.mjv.gamequiz.dtos.PlayerDTO;
 import com.mjv.gamequiz.dtos.QuizGameDTO;
-import com.mjv.gamequiz.exceptions.PlayerException;
-import com.mjv.gamequiz.exceptions.QuestionException;
+import com.mjv.gamequiz.exceptions.Player.PlayerException;
+import com.mjv.gamequiz.exceptions.Player.PlayerNotFoundException;
+import com.mjv.gamequiz.exceptions.Question.QuestionNotFoundException;
 import com.mjv.gamequiz.repositories.PlayerRepository;
 import com.mjv.gamequiz.repositories.QuestionRepository;
 import lombok.AllArgsConstructor;
@@ -25,21 +24,21 @@ public class QuizGameService {
 
     public boolean checkAnswer(QuizGameDTO quizGameDTO) {
         Question question = questionRepository.findById(quizGameDTO.getQuestionId())
-                .orElseThrow(() -> new QuestionException("Questão não encontrada com o ID fornecido: " + quizGameDTO.getQuestionId()));
+                .orElseThrow(() -> new QuestionNotFoundException("Questão não encontrada com o ID fornecido: " + quizGameDTO.getQuestionId()));
 
         return Objects.equals(question.getCorrectAlternativeID(), quizGameDTO.getChosenAlternativeId());
     }
 
-    public PlayerDTO updatePlayerScore(String nickName, int scoreIncrement) {
+    public void updatePlayerScore(String nickName, int scoreIncrement) {
         try {
             Player existingPlayer = playerRepository.findByNickName(nickName)
-                    .orElseThrow(() -> new PlayerException("Jogador não encontrado com ID: " + nickName));
+                    .orElseThrow(() -> new PlayerNotFoundException("Jogador não encontrado com ID: " + nickName));
 
             int currentScore = existingPlayer.getScore() != null ? existingPlayer.getScore() : 0;
             int newScore = currentScore + scoreIncrement;
             existingPlayer.setScore(newScore);
 
-            return playerMapper.toDTO(playerRepository.saveAndFlush(existingPlayer));
+            playerMapper.toDTO(playerRepository.saveAndFlush(existingPlayer));
         } catch (Exception ex) {
             throw new PlayerException("Erro ao atualizar o score do jogador.");
         }

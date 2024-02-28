@@ -1,14 +1,12 @@
 package com.mjv.gamequiz.dtos;
 
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.List;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class QuestionDTO {
@@ -18,16 +16,6 @@ public class QuestionDTO {
     private String answer;
     private String response;
     private Long correctAlternativeID;
-    private List<AlternativeDTO> alternativeDTOList;
+    private List<QuestionChoicesDTO> alternativeDTOList;
 
-    @Override
-    public String toString() {
-        return "\n\nQuestionDTO:" +
-                "\nid = " + id +
-                "\ntheme = " + theme +
-                "\nanswer = " + answer +
-                "\nresponse = " + response +
-                "\ncorrectAlternativeID = " + correctAlternativeID +
-                "\nalternativeDTOList = " + alternativeDTOList;
-    }
 }

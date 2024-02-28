@@ -1,10 +1,7 @@
 package com.mjv.gamequiz.services;
 
-import com.mjv.gamequiz.builders.QuestionMapper;
 import com.mjv.gamequiz.dtos.RankingTopDTO;
 import com.mjv.gamequiz.repositories.PlayerRepository;
-import com.mjv.gamequiz.repositories.QuestionRepository;
-import com.mjv.gamequiz.repositories.ThemeRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

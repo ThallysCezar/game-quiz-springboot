@@ -1,9 +1,9 @@
 package com.mjv.gamequiz.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mjv.gamequiz.dtos.AlternativeDTO;
+import com.mjv.gamequiz.dtos.QuestionChoicesDTO;
 import com.mjv.gamequiz.factories.AlternativeFactory;
-import com.mjv.gamequiz.services.AlternativeService;
+import com.mjv.gamequiz.services.QuestionChoicesService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -30,19 +30,19 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @DisplayName("Integration Teste AlternativeController")
-class AlternativeControllerIT {
+public class AlternativeControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
 
     @MockBean
-    private AlternativeService alternativeService;
+    private QuestionChoicesService alternativeService;
 
 
     @Test
     @DisplayName("Deve retornar uma alterantiva pelo seu id")
     void findById() throws Exception {
-        AlternativeDTO alternativeDTO = AlternativeFactory.createAlternativeDTO(1);
+        QuestionChoicesDTO alternativeDTO = AlternativeFactory.createAlternativeDTO(1);
 
         when(alternativeService.findById(1L)).thenReturn(alternativeDTO);
 
@@ -56,7 +56,7 @@ class AlternativeControllerIT {
     @Test
     @DisplayName("Deve retornar todas as alternativas")
     void testFindAll() throws Exception {
-        Page<AlternativeDTO> alternativesPage = new PageImpl<>(AlternativeFactory.createAlternativeDTOList(2));
+        Page<QuestionChoicesDTO> alternativesPage = new PageImpl<>(AlternativeFactory.createAlternativeDTOList(2));
 
         when(alternativeService.findAll(Mockito.any(Pageable.class))).thenReturn(alternativesPage);
 
@@ -74,7 +74,7 @@ class AlternativeControllerIT {
     @Test
     @DisplayName("Deve retornar uma alternativa pelo id da questão")
     void testFindQuestionAlternativesByQuestionId() throws Exception {
-        List<AlternativeDTO> alternatives = AlternativeFactory.createAlternativeDTOList(2);
+        List<QuestionChoicesDTO> alternatives = AlternativeFactory.createAlternativeDTOList(2);
 
         when(alternativeService.findByQuestionId(1L)).thenReturn(alternatives);
 
@@ -108,7 +108,7 @@ class AlternativeControllerIT {
     @Test
     @DisplayName("Deve retornar uma lista de alternativas salvas")
     void testSaveAll() throws Exception {
-        List<AlternativeDTO> alternativeDTOs = AlternativeFactory.createAlternativeDTOList(1);
+        List<QuestionChoicesDTO> alternativeDTOs = AlternativeFactory.createAlternativeDTOList(1);
 
 
         when(alternativeService.saveAll(Mockito.anyList())).thenReturn(alternativeDTOs);

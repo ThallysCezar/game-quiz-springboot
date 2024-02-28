@@ -1,11 +1,8 @@
 package com.mjv.gamequiz.controllers;
 
 import com.mjv.gamequiz.dtos.RankingTopDTO;
-import com.mjv.gamequiz.dtos.UserDTO;
 import com.mjv.gamequiz.factories.RankingTopFactory;
-import com.mjv.gamequiz.factories.UserFactory;
 import com.mjv.gamequiz.services.RankingTopService;
-import com.mjv.gamequiz.services.UserService;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +16,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -27,11 +23,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @DisplayName("Integration Teste RankingTopController")
-class RankingTopControllerIT {
+public class RankingTopControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
     private RankingTopService rankingTopService;
 

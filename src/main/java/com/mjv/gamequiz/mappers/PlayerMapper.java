@@ -1,4 +1,4 @@
-package com.mjv.gamequiz.builders;
+package com.mjv.gamequiz.mappers;
 
 import com.mjv.gamequiz.domains.Player;
 import com.mjv.gamequiz.dtos.PlayerDTO;
@@ -6,7 +6,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Component
 public class PlayerMapper {
@@ -34,12 +33,12 @@ public class PlayerMapper {
 
     public List<PlayerDTO> toListDTO(List<Player> modelList) {
         return modelList.stream()
-                .map(this::toDTO).collect(Collectors.toList());
+                .map(this::toDTO).toList();
     }
 
     public List<Player> toList(List<PlayerDTO> dtosList) {
         return dtosList.stream()
-                .map(this::toEntity).collect(Collectors.toList());
+                .map(this::toEntity).toList();
     }
 
 }

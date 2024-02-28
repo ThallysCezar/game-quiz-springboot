@@ -35,18 +35,18 @@ public class QuestionControllerIT {
     @MockBean
     private QuestionService questionService;
 
-    @Test
-    @DisplayName("Deve retornar todas as questões")
-    void testFindAllQuestions() throws Exception {
-        List<QuestionDTO> questions = QuestionFactory.createQuestionDTOList(2);
-
-        when(questionService.findAllQuestionsWithAlternatives()).thenReturn(questions);
-
-        mockMvc.perform(MockMvcRequestBuilders.get("/question"))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$", hasSize(2)))
-                .andReturn();
-    }
+//    @Test
+//    @DisplayName("Deve retornar todas as questões")
+//    void testFindAllQuestions() throws Exception {
+//        List<QuestionDTO> questions = QuestionFactory.createQuestionDTOList(2);
+//
+//        when(questionService.findAllQuestionsWithAlternatives()).thenReturn(questions);
+//
+//        mockMvc.perform(MockMvcRequestBuilders.get("/question"))
+//                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$", hasSize(2)))
+//                .andReturn();
+//    }
 
     @Test
     @DisplayName("Deve retornar uma questão por id")

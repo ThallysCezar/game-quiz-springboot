@@ -1,13 +1,10 @@
 package com.mjv.gamequiz.dtos;
 
-import com.mjv.gamequiz.domains.User;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 public class PlayerDTO {
@@ -17,13 +14,4 @@ public class PlayerDTO {
     private Integer score;
     private UserDTO user;
 
-    @Override
-    public String toString() {
-        return "PlayerDTO{" +
-                "id=" + id +
-                ", nickName='" + nickName + '\'' +
-                ", score=" + score +
-                ", user=" + user +
-                '}';
-    }
 }
