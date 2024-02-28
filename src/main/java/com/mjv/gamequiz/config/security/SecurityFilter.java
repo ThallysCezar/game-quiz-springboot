@@ -6,10 +6,8 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
@@ -19,22 +17,23 @@ import java.io.IOException;
 
 @Component
 @NonNullApi
-@RequiredArgsConstructor
 public class SecurityFilter extends OncePerRequestFilter {
 
-    private final TokenService tokenService;
+    @Autowired
+    TokenService tokenService;
 
-    private final UserRepository userRepository;
+    @Autowired
+    UserRepository userRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        final var token = recoverToken(request);
-        final var login = tokenService.validateToken(token);
-        UserDetails user = userRepository.findByLogin(login);
+        final var token = this.recoverToken(request);
+        if (token != null) {
+            final var login = tokenService.validateToken(token);
+            UserDetails user = userRepository.findByLogin(login);
 
-        if (user != null) {
-            Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+            final var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
@@ -47,5 +46,4 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         return authHeader.replace("Bearer ", "");
     }
-
 }

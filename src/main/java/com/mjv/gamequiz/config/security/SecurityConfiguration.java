@@ -1,6 +1,5 @@
 package com.mjv.gamequiz.config.security;
 
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -17,10 +16,10 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class SecurityConfiguration {
 
-    private final SecurityFilter securityFilter;
+    @Autowired
+    SecurityFilter securityFilter;
 
     private static final String[] AUTH_WHITELIST = {
             // -- Swagger UI v2

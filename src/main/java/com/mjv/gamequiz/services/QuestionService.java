@@ -1,6 +1,5 @@
 package com.mjv.gamequiz.services;
 
-import com.mjv.gamequiz.mappers.QuestionMapper;
 import com.mjv.gamequiz.domains.Question;
 import com.mjv.gamequiz.domains.Theme;
 import com.mjv.gamequiz.dtos.QuestionDTO;
@@ -8,6 +7,7 @@ import com.mjv.gamequiz.dtos.QuestionWithoutResponseDTO;
 import com.mjv.gamequiz.exceptions.Question.QuestionException;
 import com.mjv.gamequiz.exceptions.Question.QuestionNotFoundException;
 import com.mjv.gamequiz.exceptions.Theme.ThemeNotFoundException;
+import com.mjv.gamequiz.mappers.QuestionMapper;
 import com.mjv.gamequiz.repositories.QuestionRepository;
 import com.mjv.gamequiz.repositories.ThemeRepository;
 import io.micrometer.common.lang.NonNullApi;
@@ -34,15 +34,11 @@ public class QuestionService {
     private static final Random random = new Random();
 
     public Page<QuestionDTO> findAll(Pageable pageable) {
-        return questionMapper.toPageDTO(questionRepository.findAll(pageable));
-    }
-
-    public List<QuestionDTO> findAllQuestionsWithAlternatives() {
-        List<Question> questions = questionRepository.findAllQuestionsWithAlternatives();
-        if (questions.isEmpty()) {
+        Page<Question> questionPages = questionRepository.findAll(pageable);
+        if (questionPages.isEmpty()) {
             throw new QuestionNotFoundException("Nenhuma pergunta encontrada.");
         }
-        return questionMapper.toListDTO(questions);
+        return questionMapper.toPageDTO(questionPages);
     }
 
     public QuestionDTO findById(Long id) {

@@ -11,7 +11,9 @@ import java.util.List;
 public interface QuestionChoicesRepository extends JpaRepository<QuestionChoices, Long> {
 
     Page<QuestionChoices> findAll(Pageable pageable);
+
     List<QuestionChoices> findByQuestionId(Long questionId);
+
     @Query("SELECT COUNT(qa.id) AS alternativeCount, q.theme " +
             "FROM QuestionChoices qa " +
             "JOIN qa.question q " +

@@ -78,6 +78,7 @@ public class QuestionServiceTest {
     @Test
     @DisplayName("Deve retornar todas as questões com suas respectivas alternativas")
     void deveRetornarTodasQuestoesComAlternativas() {
+        final var pageable = Pageable.unpaged();
         Question question1 = new Question();
         question1.setId(1L);
         question1.setAnswer("Texto da questão 1");
@@ -86,13 +87,14 @@ public class QuestionServiceTest {
         question1.setAlternativeList(alternatives1);
 
         List<Question> questions = Arrays.asList(question1);
+        Page<Question> questionList = new PageImpl<>(questions);
 
-        Mockito.when(repository.findAllQuestionsWithAlternatives()).thenReturn(questions);
+        Mockito.when(repository.findAll(pageable)).thenReturn(questionList);
         Mockito.when(mapper.toListDTO(questions)).thenReturn(Arrays.asList(new QuestionDTO()));
 
-        final var retorno = sut.findAllQuestionsWithAlternatives();
+        final var retorno = sut.findAll(pageable);
 
-        Assertions.assertEquals(questions.size(), retorno.size());
+        Assertions.assertEquals(questions.size(), retorno.getTotalElements());
         Mockito.verify(repository, Mockito.times(1)).findAllQuestionsWithAlternatives();
         Mockito.verify(mapper, Mockito.times(1)).toListDTO(questions);
     }
@@ -101,13 +103,14 @@ public class QuestionServiceTest {
     @Test
     @DisplayName("Deve lançar QuestionException quando houver erro ao logar um usuário com o username")
     void deveLancarQuestionExceptionErroAoBuscarTodasQuestoesComAlternativas() {
-        List<Question> questions = new ArrayList<>(Collections.emptyList());
-        Mockito.when(repository.findAll()).thenReturn(questions);
+        final var pageable = Pageable.unpaged();
+        Page<Question> questions = Page.empty();
+        Mockito.when(repository.findAll(pageable)).thenReturn(questions);
 
         final var excecao = Assertions.assertThrows(QuestionNotFoundException.class, () ->
-                sut.findAllQuestionsWithAlternatives());
+                sut.findAll(pageable));
 
-        Mockito.verify(repository, Mockito.times(1)).findAllQuestionsWithAlternatives();
+        Mockito.verify(repository, Mockito.times(1)).findAll(pageable);
         Assertions.assertNotNull(excecao);
     }
 

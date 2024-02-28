@@ -5,6 +5,7 @@ import com.mjv.gamequiz.services.QuestionService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
@@ -28,9 +29,9 @@ public class QuestionController {
         return ResponseEntity.ok().body(questionService.findById(id));
     }
 
-    @GetMapping
-    public ResponseEntity<List<QuestionDTO>> findAllQuestions(@PageableDefault Pageable pageable) {
-        return ResponseEntity.ok().body(questionService.findAllQuestionsWithAlternatives());
+    @GetMapping("/findAllQuestions")
+    public ResponseEntity<Page<QuestionDTO>> findAll(@PageableDefault Pageable pageable) {
+        return ResponseEntity.ok().body(questionService.findAll(pageable));
     }
 
     @GetMapping("/theme/{themeName}")
