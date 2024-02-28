@@ -32,7 +32,11 @@ public class SecurityConfiguration {
             "/webjars/**",
             // -- Swagger UI v3 (OpenAPI)
             "/v3/api-docs/**",
-            "/swagger-ui/**"
+            "/swagger-ui/**",
+            "/actuator/**",
+            "/actuator/health",
+            "/actuator/metrics",
+            "/actuator/info"
             // other public endpoints of your API may be appended to this array
     };
 
