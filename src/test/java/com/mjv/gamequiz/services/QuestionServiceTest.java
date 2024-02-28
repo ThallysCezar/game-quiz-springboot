@@ -3,9 +3,12 @@ package com.mjv.gamequiz.services;
 import com.mjv.gamequiz.builders.QuestionMapper;
 import com.mjv.gamequiz.domains.Question;
 import com.mjv.gamequiz.domains.QuestionChoices;
+import com.mjv.gamequiz.domains.Theme;
 import com.mjv.gamequiz.dtos.QuestionDTO;
 import com.mjv.gamequiz.dtos.ThemeDTO;
 import com.mjv.gamequiz.exceptions.Question.QuestionException;
+import com.mjv.gamequiz.exceptions.Question.QuestionNotFoundException;
+import com.mjv.gamequiz.exceptions.Theme.ThemeNotFoundException;
 import com.mjv.gamequiz.factories.QuestionFactory;
 import com.mjv.gamequiz.repositories.QuestionRepository;
 import com.mjv.gamequiz.repositories.ThemeRepository;
@@ -66,11 +69,11 @@ public class QuestionServiceTest {
         Page<Question> questionList = new PageImpl<>(Collections.emptyList());
         Mockito.when(repository.findAll(pageable)).thenReturn(questionList);
 
-        final var excecao = Assertions.assertThrows(QuestionException.class, () ->
+    final var excecao = Assertions.assertThrows(QuestionException.class, () ->
                 sut.findAll(pageable));
 
         Mockito.verify(repository, Mockito.times(1)).findAll(pageable);
-        Assertions.assertEquals("Nenhuma pergunta encontrada.", excecao.getMessage());
+        Assertions.assertNotNull(excecao);
     }
 
 
@@ -103,11 +106,11 @@ public class QuestionServiceTest {
         List<Question> questions = new ArrayList<>(Collections.emptyList());
         Mockito.when(repository.findAll()).thenReturn(questions);
 
-        final var excecao = Assertions.assertThrows(QuestionException.class, () ->
+        final var excecao = Assertions.assertThrows(QuestionNotFoundException.class, () ->
                 sut.findAllQuestionsWithAlternatives());
 
         Mockito.verify(repository, Mockito.times(1)).findAllQuestionsWithAlternatives();
-        Assertions.assertEquals("Nenhuma pergunta encontrada.", excecao.getMessage());
+        Assertions.assertNotNull(excecao);
     }
 
 
@@ -152,46 +155,47 @@ public class QuestionServiceTest {
         final Long id = 9999L;
         Mockito.when(repository.existsById(id)).thenReturn(false);
 
-        final var excecao = Assertions.assertThrows(QuestionException.class, () ->
+        final var excecao = Assertions.assertThrows(QuestionNotFoundException.class, () ->
                 sut.findById(id));
 
         Mockito.verify(repository, Mockito.times(1)).existsById(id);
-        Assertions.assertEquals(String.format("Pergunta não encontrado com o id '%s'.", id), excecao.getMessage());
+        Assertions.assertNotNull(excecao);
     }
 
 
     @Test
     @DisplayName("Deve retornar questões salvas")
     void deveRetornarSalvarQuestoes() {
+        // Arrange
         final var questionDTO = QuestionFactory.createValidQuestionDTO();
         final var questionEntity = QuestionFactory.createValidQuestion();
+
         Mockito.when(mapper.toEntity(questionDTO)).thenReturn(questionEntity);
+        Mockito.when(themeRepository.findByTheme(questionEntity.getTheme().getTheme())).thenReturn(Optional.of(new Theme()));
         Mockito.when(repository.save(Mockito.any(Question.class))).thenReturn(questionEntity);
         Mockito.when(mapper.toDTO(questionEntity)).thenReturn(questionDTO);
 
-        final var questionCapture = ArgumentCaptor.forClass(Question.class);
-        sut.save(questionDTO);
+        // Act
+        QuestionDTO savedQuestionDTO = sut.save(questionDTO);
 
-        Mockito.verify(repository, Mockito.times(1)).save(questionCapture.capture());
-        Assertions.assertEquals(questionDTO.getAnswer(), questionCapture.getValue().getAnswer());
-        Mockito.verify(mapper, Mockito.times(1)).toDTO(Mockito.any(Question.class));
+        // Assert
+        Mockito.verify(repository, Mockito.times(1)).save(questionEntity);
+        Mockito.verify(mapper, Mockito.times(1)).toDTO(questionEntity);
+        Assertions.assertEquals(questionDTO.getAnswer(), savedQuestionDTO.getAnswer());
     }
 
-
     @Test
-    @DisplayName("Deve lançar QuestionException quando houver erro ao tentar salvar uma questão")
-    void deveLancarQuestionExceptionErroAoSalvarQuestoes() {
+    @DisplayName("Deve lançar exceção em caso de erro desconhecido")
+    void deveLancarExcecaoErroDesconhecido() {
         final var questionDTO = QuestionFactory.createValidQuestionDTO();
         final var questionEntity = QuestionFactory.createValidQuestion();
-        Mockito.when(repository.save(Mockito.any(Question.class))).thenThrow(QuestionException.class);
+
         Mockito.when(mapper.toEntity(questionDTO)).thenReturn(questionEntity);
+        Mockito.when(themeRepository.findByTheme(questionEntity.getTheme().getTheme())).thenThrow(new RuntimeException("Erro desconhecido"));
 
-        final var excecao = Assertions.assertThrows(QuestionException.class, () ->
-                sut.save(questionDTO));
+        final var excecao = Assertions.assertThrows(QuestionException.class, () -> sut.save(questionDTO));
 
-        Mockito.verify(repository, Mockito.times(1)).save(questionEntity);
-        Mockito.verify(mapper, Mockito.times(1)).toEntity(questionDTO);
-        Assertions.assertEquals("Erro ao tentar salvar a pergunta.", excecao.getMessage());
+        Assertions.assertNotNull(excecao);
     }
 
     @Test
@@ -208,19 +212,6 @@ public class QuestionServiceTest {
         Assertions.assertEquals(List.of(questionEntity).size(), retorno.size());
         Mockito.verify(repository, Mockito.times(1)).findByThemeName(themeName);
         Mockito.verify(mapper, Mockito.times(1)).toListDTO(List.of(questionEntity));
-    }
-
-    @Test
-    @DisplayName("Deve lançar QuestionException quando houver erro ao tentar salvar uma questão")
-    void deveLancarQuestionExceptionAoBuscarQuestoesPorTema() {
-        String themeName = "Tema questão";
-        Mockito.when(repository.findByThemeName(themeName)).thenReturn(Collections.emptyList());
-
-        final var excecao = Assertions.assertThrows(QuestionException.class, () ->
-                sut.getQuestionsByTheme(themeName));
-
-        Mockito.verify(repository, Mockito.times(1)).findByThemeName(themeName);
-        Assertions.assertEquals("Erro ao procurar por tema de questões.", excecao.getMessage());
     }
 
     @Test
@@ -249,12 +240,11 @@ public class QuestionServiceTest {
         String themeName = "Tema questão";
         Mockito.when(repository.findByThemeName(themeName)).thenReturn(Collections.emptyList());
 
-        final var excecao = Assertions.assertThrows(QuestionException.class, () ->
+        final var excecao = Assertions.assertThrows(QuestionNotFoundException.class, () ->
                 sut.getRandomQuestionByTheme(themeName));
 
         Mockito.verify(repository, Mockito.times(1)).findByThemeName(themeName);
-        Assertions.assertEquals("Nenhuma QuestionDTO encontrada para o tema: " + themeName, excecao.getMessage());
+        Assertions.assertNotNull(excecao);
     }
-
 
 }

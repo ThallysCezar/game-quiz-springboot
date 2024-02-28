@@ -26,7 +26,6 @@ public class PlayerControllerIT {
     @Autowired
     private MockMvc mockMvc;
 
-
     @MockBean
     private PlayerService playerService;
 

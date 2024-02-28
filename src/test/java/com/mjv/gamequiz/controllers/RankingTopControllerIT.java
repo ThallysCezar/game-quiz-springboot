@@ -27,7 +27,6 @@ public class RankingTopControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
-
     @MockBean
     private RankingTopService rankingTopService;
 

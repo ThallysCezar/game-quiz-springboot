@@ -6,7 +6,7 @@ import org.springframework.web.server.ResponseStatusException;
 public class ThemeNotFoundException extends ResponseStatusException {
 
     public ThemeNotFoundException() {
-        super(HttpStatus.UNPROCESSABLE_ENTITY, "Theme não encontrado com esse id");
+        super(HttpStatus.UNPROCESSABLE_ENTITY, "Theme não encontrado com esse nome");
     }
 
     public ThemeNotFoundException(String message) {

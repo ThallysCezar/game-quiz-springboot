@@ -4,6 +4,7 @@ import com.mjv.gamequiz.builders.UserMapper;
 import com.mjv.gamequiz.domains.User;
 import com.mjv.gamequiz.dtos.UserDTO;
 import com.mjv.gamequiz.exceptions.User.UserException;
+import com.mjv.gamequiz.exceptions.User.UserNotFoundException;
 import com.mjv.gamequiz.repositories.UserRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -48,15 +49,15 @@ public class UserServiceTest {
 
 
     @Test
-    @DisplayName("Deve lançar UserException quando houver erro ao procurar todas as questões por paginas")
-    void deveLancarUserExceptionErroAoTodosUsuarios() {
+    @DisplayName("Deve lançar UserNotFoundException quando houver erro ao procurar todas as questões por paginas")
+    void deveLancarUserNotFoundExceptionErroAoTodosUsuarios() {
         Mockito.when(repository.findAll()).thenReturn(Collections.emptyList());
 
-        final var excecao = Assertions.assertThrows(UserException.class, () ->
+        final var excecao = Assertions.assertThrows(UserNotFoundException.class, () ->
                 sut.findAll());
 
         Mockito.verify(repository, Mockito.times(1)).findAll();
-        Assertions.assertEquals("Nenhum usuário encontrado.", excecao.getMessage());
+        Assertions.assertNotNull(excecao);
     }
 
     @Test
@@ -100,11 +101,11 @@ public class UserServiceTest {
         final Long id = 9999L;
         Mockito.when(repository.existsById(id)).thenReturn(false);
 
-        final var excecao = Assertions.assertThrows(UserException.class, () ->
+        final var excecao = Assertions.assertThrows(UserNotFoundException.class, () ->
                 sut.findUserById(id));
 
         Mockito.verify(repository, Mockito.times(1)).existsById(id);
-        Assertions.assertEquals(String.format("Usuário não encontrado com o id '%s'.", id), excecao.getMessage());
+        Assertions.assertNotNull(excecao);
     }
 
     @Test

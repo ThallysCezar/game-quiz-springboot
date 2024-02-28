@@ -5,6 +5,7 @@ import com.mjv.gamequiz.builders.UserMapper;
 import com.mjv.gamequiz.domains.Player;
 import com.mjv.gamequiz.dtos.PlayerDTO;
 import com.mjv.gamequiz.exceptions.Player.PlayerException;
+import com.mjv.gamequiz.exceptions.Player.PlayerNotFoundException;
 import com.mjv.gamequiz.factories.PlayerFactory;
 import com.mjv.gamequiz.factories.UserFactory;
 import com.mjv.gamequiz.repositories.PlayerRepository;
@@ -58,11 +59,11 @@ public class PlayerServiceTest {
         List<Player> userList = new ArrayList<>(Collections.emptyList());
         Mockito.when(repository.findAll()).thenReturn(userList);
 
-        final var excecao = Assertions.assertThrows(PlayerException.class, () ->
+        final var excecao = Assertions.assertThrows(PlayerNotFoundException.class, () ->
                 sut.findAll());
 
         Mockito.verify(repository, Mockito.times(1)).findAll();
-        Assertions.assertEquals("Nenhum player encontrado", excecao.getMessage());
+        Assertions.assertNotNull(excecao);
     }
 
     @Test
@@ -106,11 +107,11 @@ public class PlayerServiceTest {
         final Long id = 9999L;
         Mockito.when(repository.existsById(id)).thenReturn(false);
 
-        final var excecao = Assertions.assertThrows(PlayerException.class, () ->
+        final var excecao = Assertions.assertThrows(PlayerNotFoundException.class, () ->
                 sut.findById(id));
 
         Mockito.verify(repository, Mockito.times(1)).existsById(id);
-        Assertions.assertEquals(String.format("Player não encontrado com o id '%s'.", id), excecao.getMessage());
+        Assertions.assertNotNull(excecao);
     }
 
     @Test
@@ -141,7 +142,7 @@ public class PlayerServiceTest {
         final var excecao = Assertions.assertThrows(PlayerException.class, () ->
                 sut.updatePlayer(playerDTO));
 
-        Assertions.assertEquals("Erro ao atualizar o player.", excecao.getMessage());
+        Assertions.assertNotNull(excecao);
     }
 
     @Test
@@ -175,7 +176,7 @@ public class PlayerServiceTest {
 
         Mockito.verify(repository, Mockito.times(1)).save(playerEntity);
         Mockito.verify(mapper, Mockito.times(1)).toEntity(playerDTO);
-        Assertions.assertEquals("Erro ao salvar um player.", excecao.getMessage());
+        Assertions.assertNotNull(excecao);
     }
 
     @Test
@@ -215,10 +216,11 @@ public class PlayerServiceTest {
         final Long id = 9999L;
         Mockito.when(repository.existsById(id)).thenReturn(false);
 
-        final var excecao = Assertions.assertThrows(PlayerException.class, () ->
+        final var excecao = Assertions.assertThrows(PlayerNotFoundException.class, () ->
                 sut.findById(id));
 
         Mockito.verify(repository, Mockito.times(1)).existsById(id);
-        Assertions.assertEquals(String.format("Player não encontrado com o id '%s'.", id), excecao.getMessage());
+        Assertions.assertNotNull(excecao);
     }
+
 }

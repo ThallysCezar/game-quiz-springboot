@@ -36,7 +36,7 @@ public class QuestionChoicesService {
             throw new IllegalArgumentException("O ID não pode ser nulo, tente novamente.");
         }
         if (!questionChoicesRepository.existsById(id)) {
-            throw new QuestionChoicesException(String.format("Alternativa não encontrada com o id '%s'.", id));
+            throw new QuestionChoicesNotFoundException(String.format("Alternativa não encontrada com o id '%s'.", id));
 
         }
         return questionChoicesRepository.findById(id)

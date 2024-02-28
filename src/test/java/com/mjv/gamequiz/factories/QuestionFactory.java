@@ -16,6 +16,7 @@ public class QuestionFactory {
         Question question = new Question();
         question.setId(1L);
         final var theme = new Theme();
+        theme.setTheme("Cinema");
         question.setTheme(theme);
         question.setAnswer("Sample Question");
         question.setResponse("Sample Response");
@@ -44,6 +45,7 @@ public class QuestionFactory {
     public static QuestionDTO createValidQuestionDTO() {
         QuestionDTO questionDTO = new QuestionDTO();
         final var theme = new ThemeDTO();
+        theme.setTheme("Cinema");
         questionDTO.setTheme(theme);
         questionDTO.setAnswer("Sample Question");
         questionDTO.setResponse("Sample Response");

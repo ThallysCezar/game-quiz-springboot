@@ -9,6 +9,7 @@ import com.mjv.gamequiz.exceptions.Question.QuestionNotFoundException;
 import com.mjv.gamequiz.exceptions.Theme.ThemeNotFoundException;
 import com.mjv.gamequiz.repositories.QuestionRepository;
 import com.mjv.gamequiz.repositories.ThemeRepository;
+import io.micrometer.common.util.StringUtils;
 import lombok.AllArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -62,16 +63,17 @@ public class QuestionService {
         try {
             Question questionEntity = questionMapper.toEntity(questionDTO);
             final var themeName = questionEntity.getTheme().getTheme();
-            if (!themeName.isEmpty()) {
+            if (StringUtils.isNotEmpty(themeName)) {
                 Theme theme = themeRepository.findByTheme(themeName)
                         .orElseThrow(ThemeNotFoundException::new);
                 questionEntity.setTheme(theme);
                 Question savedQuestion = questionRepository.save(questionEntity);
                 return questionMapper.toDTO(savedQuestion);
+            } else {
+                throw new ThemeNotFoundException("Nome do tema está vazio.");
             }
-            throw new QuestionException();
         } catch (Exception ex) {
-            LOGGER.error("erro LOG: ", ex);
+            LOGGER.error("Erro desconhecido ao salvar a questão: " + ex.getMessage(), ex);
             throw new QuestionException();
         }
     }
