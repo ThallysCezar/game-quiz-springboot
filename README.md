@@ -6,7 +6,7 @@ Bem-vindo ao GameQuiz! Este é um projeto de quiz de perguntas e respostas desen
 
 ## Stack utilizada
 
-**Back-end:** Java, Spring Boot, PostgreSQL + DBeaver, JUnit + Mockito para testes unitários e Spring Security + JWT para autenticação.
+**Back-end:** Java, Spring Boot, PostgreSQL + DBeaver, JUnit + Mockito para testes unitários, Spring Security + JWT para autenticação, Flyway para migração de banco de dados.
 
 
 ## Configuração
@@ -25,7 +25,7 @@ Bem-vindo ao GameQuiz! Este é um projeto de quiz de perguntas e respostas desen
 ```
 - ### Configuração do Banco de Dados
 
-1. **Instalação do PostgreSQL**: Se você ainda não tem o PostgreSQL instalado em seu sistema, siga as instruções de instalação fornecidas no [site oficial do PostgreSQL](https://www.postgresql.org/download/) para o seu sistema operacional.
+1. **Instalação do PostgreSQL**: Se você ainda não tem o PostgreSQL instalado em seu sistema, siga as instruções de instalação fornecidas no site oficial do PostgreSQL para o seu sistema operacional.
 
 2. **Criação do Banco de Dados**: Após a instalação, você precisará criar um banco de dados para o seu aplicativo. Você pode fazer isso usando a ferramenta de linha de comando `psql` fornecida com o PostgreSQL ou uma interface gráfica como o pgAdmin.
 
@@ -33,18 +33,26 @@ Bem-vindo ao GameQuiz! Este é um projeto de quiz de perguntas e respostas desen
    psql -U postgres
    CREATE DATABASE gamequiz;
    ```
-Substitua 'postgres' pelo seu nome de usuário do PostgreSQL, se necessário.
-3. Configuração do Spring Boot: Agora que o banco de dados está pronto, você precisa configurar seu projeto Spring Boot para usar o PostgreSQL. No application.properties:
-```properties
-# PostgreSQL
-spring.datasource.url=jdbc:postgresql://localhost:5432/gamequiz
-spring.datasource.username=seu_usuario
-spring.datasource.password=sua_senha
-spring.datasource.driver-class-name=org.postgresql.Driver
-spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
-```
-4. Certifique-se de substituir 'seu_usuario' e 'sua_senha' pelo seu nome de usuário e senha do PostgreSQL, respectivamente. O URL jdbc também pode precisar ser ajustado dependendo da configuração do seu PostgreSQL.
-5. Teste de Conexão: Após configurar tudo, reinicie seu aplicativo Spring Boot e verifique se ele consegue se conectar ao banco de dados PostgreSQL corretamente.
+   
+   Substitua 'postgres' pelo seu nome de usuário do PostgreSQL, se necessário.
+3. Configuração do Flyway: O Flyway é uma ferramenta de migração de banco de dados que permite gerenciar e versionar alterações em seu banco de dados. Certifique-se de ter o Flyway instalado e configurado em seu projeto. O arquivo flyway.conf contém as configurações para o Flyway, incluindo o nome do banco de dados. Certifique-se de alterar ou criar um banco de dados com o mesmo nome especificado no flyway.conf.
+   - Execute o comando depois da criação do banco de dados, via Flyway:
+    ```bash
+      mvn flyway:migrate
+    ```
+    
+5. Configuração do Spring Boot: Agora que o banco de dados está pronto, você precisa configurar seu projeto Spring Boot para usar o PostgreSQL. No arquivo application.properties:
+   ```properties
+   # PostgreSQL
+    spring.datasource.url=jdbc:postgresql://localhost:5432/gamequiz
+    spring.datasource.username=seu_usuario
+    spring.datasource.password=sua_senha
+    spring.datasource.driver-class-name=org.postgresql.Driver
+    spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
+   ```
+   Certifique-se de substituir 'seu_usuario' e 'sua_senha' pelo seu nome de usuário e senha do PostgreSQL, respectivamente. O URL jdbc também pode precisar ser ajustado dependendo da configuração do seu PostgreSQL.
+   
+6. Teste de Conexão: Após configurar tudo, reinicie seu aplicativo Spring Boot e verifique se ele consegue se conectar ao banco de dados PostgreSQL corretamente
     
 ## Documentação da API
 - QuestionController
@@ -298,15 +306,7 @@ spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
 | `login`      | `String` | **Obrigatório**. O login(email) do user que você quer verificar. |
 | `theme`      | `String` | **Obrigatório**. O questões por tema que você quer recuperar.    |
 
-### Game-Quiz
-- Endpoint, que o jogo se basea:
-  - Coloca o id da questão(o qual recuperou no endpoint de antes)
-    - OBS: cada questão tem 8 alternativas.
-  - Coloca a alternative que você acha que é a correta
-  - Coloca o nickname do seu jogador:
-     - Jogador acertou: receberá 100 pontos de scores,
-     - senão, não ganhará nada.
-
+### Game-Quiz, onde o jogo irá funcionar.
 ```http
   POST /game-quiz/answer
 ```
@@ -317,11 +317,19 @@ spring.jpa.database-platform=org.hibernate.dialect.PostgreSQLDialect
       "nickName": "Samuca"
   }
 ```
+| Parâmetro   | Tipo       | Descrição                                                        |
+| :---------- | :--------- |:-----------------------------------------------------------------|
+| `questionId`    | `Long` | **Obrigatório**. Id da questão. |
+| `chosenAlternativeId`    | `Long` | **Obrigatório**. Id da alternativa, o qual você acha que é a certa.    |
+| `nickName`      | `String` | **Obrigatório**. Nickname do player, caso acerte será acrescentado score.    |
+
 - Nicknames:
   - "Thays"
   - "Samuca"
   - "Robinho"
   - "BiaBia"
+ 
+Observação: Certifique  de estar autenticado e de posse do token de verificação para fazer a requisição dos endpoints, ou irá mostrar que você não tem acesso, 403 Forbidden.
 
 ### Documentação com Swagger
 A documentação completa da API pode ser encontrada no Swagger também. Para acessar a documentação, siga as etapas abaixo:
@@ -355,10 +363,39 @@ OBS: Os usuários têm duas roles: ADMIN e USER. Apenas o usuário com o email '
 
 Divirta-se explorando a API!
 
-## Contexto do Projeto
+## Como o jogo funciona
+Para começar a jogar, siga os passos abaixo:
+1. Autenticação
+    - Faça login com seu usuário e senha em:
+        ```http
+            POST /auth/login
+        ```
+    - Esta requisição retornará um token de autenticação que deve ser usado nas próximas requisições.
+
+2. Obtenção de Questão Aleatória por Tema:
+    - Após estar em posse do token para autenticação, utilize o endpoint abaixo para obter uma questão aleatória com base no tema escolhido:
+        ```http
+            GET /game-quiz/{login}/{theme}
+        ```
+    - Este endpoint retorna a questão com suas alternativas.
+
+3. Envio da Resposta da Questão:
+    - Após obter a questão, envie sua resposta utilizando o endpoint:
+        ```http
+            POST /game-quiz/answer
+        ```
+    - Se a resposta estiver correta, o jogador receberá 100 pontos de score.
+
+4. Consulta do Ranking de Jogadores:
+    - Para visualizar o ranking dos jogadores com as maiores pontuações, utilize o endpoint:
+        ```http
+            GET /ranking-players
+        ```
+Observação: As questões são geradas aleatoriamente com base no tema escolhido. Caso tenha dificuldades para acessar os endpoints fornecidos, consulte como deve ser usado cada endpoint na documentação da API.
+
+## Sobre o projeto
 
 Este projeto foi desenvolvido como parte do curso da School MJV de Java. Ele serviu como uma oportunidade para revisar conceitos básicos de Java com Spring Boot, explorando a criação de APIs RESTful, manipulação de banco de dados e interações entre entidades. Se você encontrar problemas ou tiver sugestões de melhoria, sinta-se à vontade para abrir uma issue ou enviar um pull request. Divirta-se explorando e desenvolvendo!
-
 
 ## Contribuindo
 
