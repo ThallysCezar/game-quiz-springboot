@@ -1,6 +1,6 @@
 package com.mjv.gamequiz.services;
 
-import com.mjv.gamequiz.builders.QuestionMapper;
+import com.mjv.gamequiz.mappers.QuestionMapper;
 import com.mjv.gamequiz.domains.Question;
 import com.mjv.gamequiz.domains.Theme;
 import com.mjv.gamequiz.dtos.QuestionDTO;
@@ -10,8 +10,9 @@ import com.mjv.gamequiz.exceptions.Question.QuestionNotFoundException;
 import com.mjv.gamequiz.exceptions.Theme.ThemeNotFoundException;
 import com.mjv.gamequiz.repositories.QuestionRepository;
 import com.mjv.gamequiz.repositories.ThemeRepository;
+import io.micrometer.common.lang.NonNullApi;
 import io.micrometer.common.util.StringUtils;
-import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.data.domain.Page;
@@ -19,24 +20,21 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Random;
 
 @Service
-@AllArgsConstructor
+@RequiredArgsConstructor
+@NonNullApi
 public class QuestionService {
 
     private final QuestionRepository questionRepository;
     private final QuestionMapper questionMapper;
     private final ThemeRepository themeRepository;
     private final Logger LOGGER = LogManager.getLogger(QuestionService.class);
+    private static final Random random = new Random();
 
     public Page<QuestionDTO> findAll(Pageable pageable) {
-        Page<Question> questions = questionRepository.findAll(pageable);
-        if (questions.isEmpty()) {
-            throw new QuestionException("Nenhuma pergunta encontrada.");
-        }
-        return questionMapper.toPageDTO(questions);
+        return questionMapper.toPageDTO(questionRepository.findAll(pageable));
     }
 
     public List<QuestionDTO> findAllQuestionsWithAlternatives() {
@@ -48,16 +46,9 @@ public class QuestionService {
     }
 
     public QuestionDTO findById(Long id) {
-        if (Objects.isNull(id)) {
-            throw new IllegalArgumentException("O ID não pode ser nulo, tente novamente.");
-        }
-        if (!questionRepository.existsById(id)) {
-            throw new QuestionNotFoundException();
-        }
-
         return questionRepository.findById(id)
                 .map(questionMapper::toDTO)
-                .orElseThrow(QuestionException::new);
+                .orElseThrow(QuestionNotFoundException::new);
     }
 
     public QuestionDTO save(QuestionDTO questionDTO) {
@@ -74,7 +65,7 @@ public class QuestionService {
                 throw new ThemeNotFoundException("Nome do tema está vazio.");
             }
         } catch (Exception ex) {
-            LOGGER.error("Erro desconhecido ao salvar a questão: " + ex.getMessage(), ex);
+            LOGGER.error("Erro desconhecido ao salvar a questão: {}", ex.getMessage(), ex);
             throw new QuestionException();
         }
     }
@@ -93,7 +84,6 @@ public class QuestionService {
             throw new QuestionNotFoundException("Nenhuma QuestionDTO encontrada para o tema: " + themeName);
         }
 
-        Random random = new Random();
         int randomIndex = random.nextInt(questions.size());
         Question randomQuestion = questions.get(randomIndex);
 

@@ -1,6 +1,6 @@
 package com.mjv.gamequiz.services;
 
-import com.mjv.gamequiz.builders.UserMapper;
+import com.mjv.gamequiz.mappers.UserMapper;
 import com.mjv.gamequiz.domains.User;
 import com.mjv.gamequiz.dtos.UserDTO;
 import com.mjv.gamequiz.exceptions.User.UserException;

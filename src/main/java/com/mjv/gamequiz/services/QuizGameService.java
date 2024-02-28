@@ -1,12 +1,11 @@
 package com.mjv.gamequiz.services;
 
-import com.mjv.gamequiz.builders.PlayerMapper;
+import com.mjv.gamequiz.mappers.PlayerMapper;
 import com.mjv.gamequiz.domains.Player;
 import com.mjv.gamequiz.domains.Question;
 import com.mjv.gamequiz.dtos.QuizGameDTO;
 import com.mjv.gamequiz.exceptions.Player.PlayerException;
 import com.mjv.gamequiz.exceptions.Player.PlayerNotFoundException;
-import com.mjv.gamequiz.exceptions.Question.QuestionException;
 import com.mjv.gamequiz.exceptions.Question.QuestionNotFoundException;
 import com.mjv.gamequiz.repositories.PlayerRepository;
 import com.mjv.gamequiz.repositories.QuestionRepository;

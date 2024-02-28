@@ -49,7 +49,6 @@ public class PlayerControllerIT {
         mockMvc.perform(MockMvcRequestBuilders.get("/players")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(MockMvcResultMatchers.status().isOk());
-        // Adicione mais validações conforme necessário
     }
 
     @Test

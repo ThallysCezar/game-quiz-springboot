@@ -5,7 +5,6 @@ import org.springframework.web.server.ResponseStatusException;
 
 public class QuestionNotFoundException extends ResponseStatusException {
 
-
     public QuestionNotFoundException() {
         super(HttpStatus.UNPROCESSABLE_ENTITY, "Questão não encontrada com esse id");
     }

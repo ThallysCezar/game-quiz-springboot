@@ -1,6 +1,6 @@
 package com.mjv.gamequiz.services;
 
-import com.mjv.gamequiz.builders.QuestionChoicesMapper;
+import com.mjv.gamequiz.mappers.QuestionChoicesMapper;
 import com.mjv.gamequiz.domains.QuestionChoices;
 import com.mjv.gamequiz.dtos.QuestionChoicesDTO;
 import com.mjv.gamequiz.exceptions.QuestionChoices.QuestionChoicesException;
@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 @Service
 @AllArgsConstructor
@@ -55,7 +54,7 @@ public class QuestionChoicesService {
         }
         return alternativeList.stream()
                 .map(questionChoicesMapper::toDTO)
-                .collect(Collectors.toList());
+                .toList();
     }
 
     public QuestionChoicesDTO save(QuestionChoicesDTO alternativeDTO) {
@@ -71,7 +70,7 @@ public class QuestionChoicesService {
             List<QuestionChoices> savedAlternatives = questionChoicesRepository.saveAll(alternatives);
             return savedAlternatives.stream()
                     .map(questionChoicesMapper::toDTO)
-                    .collect(Collectors.toList());
+                    .toList();
         } catch (QuestionChoicesException exQuestionAlternative) {
             throw new QuestionChoicesException("Erro ao tentar salvar todas as alternativas");
         }

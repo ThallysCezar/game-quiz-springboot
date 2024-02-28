@@ -1,6 +1,6 @@
 package com.mjv.gamequiz.services;
 
-import com.mjv.gamequiz.builders.QuestionChoicesMapper;
+import com.mjv.gamequiz.mappers.QuestionChoicesMapper;
 import com.mjv.gamequiz.domains.Question;
 import com.mjv.gamequiz.domains.QuestionChoices;
 import com.mjv.gamequiz.dtos.QuestionChoicesDTO;

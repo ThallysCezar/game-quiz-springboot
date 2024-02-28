@@ -1,9 +1,7 @@
 package com.mjv.gamequiz.controllers;
 
-import com.mjv.gamequiz.dtos.QuestionDTO;
 import com.mjv.gamequiz.dtos.QuestionWithoutResponseDTO;
 import com.mjv.gamequiz.dtos.QuizGameDTO;
-import com.mjv.gamequiz.exceptions.Theme.ThemeException;
 import com.mjv.gamequiz.services.QuestionService;
 import com.mjv.gamequiz.services.QuizGameService;
 import com.mjv.gamequiz.services.UserService;
@@ -34,12 +32,12 @@ public class QuizController {
     }
 
     @PostMapping("/answer")
-    public ResponseEntity<?> submitAnswer(@RequestBody QuizGameDTO quizGameDTO) {
+    public ResponseEntity<String> submitAnswer(@RequestBody QuizGameDTO quizGameDTO) {
         boolean isCorrect = quizGameService.checkAnswer(quizGameDTO);
         final var nickName = quizGameDTO.getNickName();
         if (isCorrect) {
             quizGameService.updatePlayerScore(nickName, 100);
-            return ResponseEntity.ok(String.format("Resposta Correta! Boa %s", nickName));
+            return ResponseEntity.ok(String.format("Resposta Correta! Boa %s!", nickName));
         } else {
             return ResponseEntity.ok(String.format("Resposta incorreta, tente novamente, %s!", nickName));
         }

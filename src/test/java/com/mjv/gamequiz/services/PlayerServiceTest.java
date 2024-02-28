@@ -1,7 +1,7 @@
 package com.mjv.gamequiz.services;
 
-import com.mjv.gamequiz.builders.PlayerMapper;
-import com.mjv.gamequiz.builders.UserMapper;
+import com.mjv.gamequiz.mappers.PlayerMapper;
+import com.mjv.gamequiz.mappers.UserMapper;
 import com.mjv.gamequiz.domains.Player;
 import com.mjv.gamequiz.dtos.PlayerDTO;
 import com.mjv.gamequiz.exceptions.Player.PlayerException;
@@ -92,7 +92,7 @@ public class PlayerServiceTest {
     @DisplayName("Deve lançar IllegalArgumentException quando houver erro ao procurar por player por id")
     void deveLancarIllegalArgumentExceptionErroAoProcurarPlayerPorId() {
         final Long id = null;
-        Mockito.when(repository.findById(null)).thenThrow(new IllegalArgumentException("O ID não pode ser nulo, tente novamente."));
+        Mockito.when(repository.findById(id)).thenThrow(new IllegalArgumentException("O ID não pode ser nulo, tente novamente."));
 
         final var excecao = Assertions.assertThrows(IllegalArgumentException.class, () ->
                 sut.findById(id));

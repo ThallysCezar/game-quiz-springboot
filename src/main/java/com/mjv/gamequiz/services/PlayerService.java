@@ -1,7 +1,7 @@
 package com.mjv.gamequiz.services;
 
-import com.mjv.gamequiz.builders.PlayerMapper;
-import com.mjv.gamequiz.builders.UserMapper;
+import com.mjv.gamequiz.mappers.PlayerMapper;
+import com.mjv.gamequiz.mappers.UserMapper;
 import com.mjv.gamequiz.domains.Player;
 import com.mjv.gamequiz.domains.User;
 import com.mjv.gamequiz.dtos.PlayerDTO;
@@ -12,7 +12,6 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Objects;
 
 @Service
 @AllArgsConstructor
@@ -32,16 +31,9 @@ public class PlayerService {
     }
 
     public PlayerDTO findById(Long id) {
-        if (Objects.isNull(id)) {
-            throw new IllegalArgumentException("O ID não pode ser nulo, tente novamente.");
-        }
-        if (!playerRepository.existsById(id)) {
-            throw new PlayerNotFoundException(String.format("Player não encontrado com o id '%s'.", id));
-        }
-
         return playerRepository.findById(id)
                 .map(playerMapper::toDTO)
-                .orElseThrow(() -> new PlayerException("Erro ao tentar procurar um player"));
+                .orElseThrow(PlayerNotFoundException::new);
     }
 
     public PlayerDTO updatePlayer(PlayerDTO playerDTO) {
@@ -54,7 +46,7 @@ public class PlayerService {
             existingPlayer.setNickName(playerDTO.getNickName());
             return playerMapper.toDTO(playerRepository.saveAndFlush(existingPlayer));
         } catch (Exception exUser) {
-            throw new PlayerException("Erro ao atualizar o player.");
+            throw new PlayerException();
         }
     }
 
@@ -62,14 +54,11 @@ public class PlayerService {
         try {
             return playerMapper.toDTO(playerRepository.save(playerMapper.toEntity(playerDTO)));
         } catch (Exception exPlayer) {
-            throw new PlayerException("Erro ao salvar um player.");
+            throw new PlayerException();
         }
     }
 
     public void deletePlayer(Long id) {
-        if (Objects.isNull(id)) {
-            throw new IllegalArgumentException("O ID não pode ser nulo, tente novamente.");
-        }
         if (!playerRepository.existsById(id)) {
             throw new PlayerNotFoundException(String.format("Player não encontrado com o id '%s'.", id));
         }

@@ -7,7 +7,6 @@ import com.mjv.gamequiz.exceptions.Question.QuestionException;
 import com.mjv.gamequiz.exceptions.Question.QuestionNotFoundException;
 import com.mjv.gamequiz.exceptions.QuestionChoices.QuestionChoicesException;
 import com.mjv.gamequiz.exceptions.QuestionChoices.QuestionChoicesNotFoundException;
-import com.mjv.gamequiz.exceptions.Theme.ThemeException;
 import com.mjv.gamequiz.exceptions.Theme.ThemeNotFoundException;
 import com.mjv.gamequiz.exceptions.User.UserAlreadyExistException;
 import com.mjv.gamequiz.exceptions.User.UserException;
@@ -44,8 +43,7 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
     @ExceptionHandler({UserException.class,
             PlayerException.class,
             QuestionException.class,
-            QuestionChoicesException.class,
-            ThemeException.class})
+            QuestionChoicesException.class})
     public ResponseEntity<ErrorMessage> handleGeneralException(Exception ex, HttpServletRequest request) {
         return handleException(ex, request, HttpStatus.INTERNAL_SERVER_ERROR);
     }

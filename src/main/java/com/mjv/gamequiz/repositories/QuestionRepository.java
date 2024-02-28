@@ -1,7 +1,6 @@
 package com.mjv.gamequiz.repositories;
 
 import com.mjv.gamequiz.domains.Question;
-import com.mjv.gamequiz.dtos.QuestionWithoutResponseDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

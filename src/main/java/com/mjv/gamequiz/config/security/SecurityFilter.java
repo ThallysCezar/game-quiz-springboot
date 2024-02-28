@@ -1,49 +1,40 @@
 package com.mjv.gamequiz.config.security;
 
 import com.mjv.gamequiz.repositories.UserRepository;
+import io.micrometer.common.lang.NonNullApi;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
-import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 
 import java.io.IOException;
 
 @Component
+@NonNullApi
+@RequiredArgsConstructor
 public class SecurityFilter extends OncePerRequestFilter {
 
-    @Autowired
-    TokenService tokenService;
+    private final TokenService tokenService;
 
-    @Autowired
-    UserRepository userRepository;
-
-//    @Bean
-//    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-//        http.authorizeRequests(authorizeRequests -> authorizeRequests.anyRequest()
-//                        .permitAll())
-//                .csrf(AbstractHttpConfigurer::disable);
-//        return http.build();
-//    }
+    private final UserRepository userRepository;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        final var token = this.recoverToken(request);
-        if (token != null) {
-            final var login = tokenService.validateToken(token);
-            UserDetails user = userRepository.findByLogin(login);
+        final var token = recoverToken(request);
+        final var login = tokenService.validateToken(token);
+        UserDetails user = userRepository.findByLogin(login);
 
-            final var authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+        if (user != null) {
+            Authentication authentication = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
 
@@ -56,4 +47,5 @@ public class SecurityFilter extends OncePerRequestFilter {
 
         return authHeader.replace("Bearer ", "");
     }
+
 }

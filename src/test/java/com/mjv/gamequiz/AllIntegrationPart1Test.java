@@ -1,11 +1,12 @@
 package com.mjv.gamequiz;
 
-import com.mjv.gamequiz.controllers.*;
-import org.junit.platform.runner.JUnitPlatform;
+import com.mjv.gamequiz.controllers.AuthenticationControllerIT;
+import com.mjv.gamequiz.controllers.PlayerControllerIT;
+import com.mjv.gamequiz.controllers.QuestionControllerIT;
+import com.mjv.gamequiz.controllers.UserControllerIT;
 import org.junit.platform.suite.api.SelectClasses;
 import org.junit.platform.suite.api.Suite;
 import org.junit.platform.suite.api.SuiteDisplayName;
-import org.junit.runner.RunWith;
 
 @Suite
 @SelectClasses({

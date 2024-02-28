@@ -1,6 +1,6 @@
 package com.mjv.gamequiz.services;
 
-import com.mjv.gamequiz.builders.QuestionMapper;
+import com.mjv.gamequiz.mappers.QuestionMapper;
 import com.mjv.gamequiz.domains.Question;
 import com.mjv.gamequiz.domains.QuestionChoices;
 import com.mjv.gamequiz.domains.Theme;
@@ -8,7 +8,6 @@ import com.mjv.gamequiz.dtos.QuestionDTO;
 import com.mjv.gamequiz.dtos.ThemeDTO;
 import com.mjv.gamequiz.exceptions.Question.QuestionException;
 import com.mjv.gamequiz.exceptions.Question.QuestionNotFoundException;
-import com.mjv.gamequiz.exceptions.Theme.ThemeNotFoundException;
 import com.mjv.gamequiz.factories.QuestionFactory;
 import com.mjv.gamequiz.repositories.QuestionRepository;
 import com.mjv.gamequiz.repositories.ThemeRepository;
@@ -16,7 +15,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -69,7 +67,7 @@ public class QuestionServiceTest {
         Page<Question> questionList = new PageImpl<>(Collections.emptyList());
         Mockito.when(repository.findAll(pageable)).thenReturn(questionList);
 
-    final var excecao = Assertions.assertThrows(QuestionException.class, () ->
+        final var excecao = Assertions.assertThrows(QuestionException.class, () ->
                 sut.findAll(pageable));
 
         Mockito.verify(repository, Mockito.times(1)).findAll(pageable);
