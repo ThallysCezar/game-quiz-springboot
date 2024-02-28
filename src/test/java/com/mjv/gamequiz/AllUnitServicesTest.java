@@ -9,6 +9,7 @@ import org.junit.runner.RunWith;
 @SelectClasses({
         UserServiceTest.class,
         AuthorizationServiceTest.class,
+        PlayerServiceTest.class,
         QuestionAlternativeServiceTest.class,
         QuestionServiceTest.class,
         RankingTopServiceTest.class,

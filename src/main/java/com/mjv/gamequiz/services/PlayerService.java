@@ -21,16 +21,16 @@ public class PlayerService {
     private final PlayerMapper playerMapper;
     private final UserMapper userMapper;
 
-    public List<PlayerDTO> findAll(){
+    public List<PlayerDTO> findAll() {
         List<Player> players = playerRepository.findAll();
-        if(players.isEmpty()){
+        if (players.isEmpty()) {
             throw new PlayerException("Nenhum player encontrado");
         }
 
         return playerMapper.toListDTO(players);
     }
 
-    public PlayerDTO findById(Long id){
+    public PlayerDTO findById(Long id) {
         if (Objects.isNull(id)) {
             throw new IllegalArgumentException("O ID não pode ser nulo, tente novamente.");
         }
@@ -43,7 +43,7 @@ public class PlayerService {
                 .orElseThrow(() -> new PlayerException("Erro ao tentar procurar um player"));
     }
 
-    public PlayerDTO updatePlayer(PlayerDTO playerDTO){
+    public PlayerDTO updatePlayer(PlayerDTO playerDTO) {
         try {
             Player existingPlayer = playerRepository.findById(playerDTO.getId())
                     .orElseThrow(() -> new PlayerException("Jogador não encontrado com ID: " + playerDTO.getId()));
@@ -65,7 +65,7 @@ public class PlayerService {
         }
     }
 
-    public void deletePlayer(Long id){
+    public void deletePlayer(Long id) {
         if (Objects.isNull(id)) {
             throw new IllegalArgumentException("O ID não pode ser nulo, tente novamente.");
         }

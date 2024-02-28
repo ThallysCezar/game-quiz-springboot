@@ -30,7 +30,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @DisplayName("Integration Teste AlternativeController")
-class AlternativeControllerIT {
+public class AlternativeControllerIT {
 
     @Autowired
     private MockMvc mockMvc;
