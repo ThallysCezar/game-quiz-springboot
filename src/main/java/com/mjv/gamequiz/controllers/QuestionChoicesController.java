@@ -3,6 +3,7 @@ package com.mjv.gamequiz.controllers;
 import com.mjv.gamequiz.domains.QuestionChoices;
 import com.mjv.gamequiz.dtos.QuestionChoicesDTO;
 import com.mjv.gamequiz.services.QuestionChoicesService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.AllArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/question-choices")
 @AllArgsConstructor
+@SecurityRequirement(name = "Bearer Authentication")
 public class QuestionChoicesController {
 
     private final QuestionChoicesService questionChoicesService;

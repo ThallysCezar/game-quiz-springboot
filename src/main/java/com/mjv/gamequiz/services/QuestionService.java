@@ -4,6 +4,7 @@ import com.mjv.gamequiz.builders.QuestionMapper;
 import com.mjv.gamequiz.domains.Question;
 import com.mjv.gamequiz.domains.Theme;
 import com.mjv.gamequiz.dtos.QuestionDTO;
+import com.mjv.gamequiz.dtos.QuestionWithoutResponseDTO;
 import com.mjv.gamequiz.exceptions.Question.QuestionException;
 import com.mjv.gamequiz.exceptions.Question.QuestionNotFoundException;
 import com.mjv.gamequiz.exceptions.Theme.ThemeNotFoundException;
@@ -86,8 +87,8 @@ public class QuestionService {
         return questionMapper.toListDTO(questions);
     }
 
-    public QuestionDTO getRandomQuestionByTheme(String themeName) {
-        List<Question> questions = questionRepository.findByThemeName(themeName);
+    public QuestionWithoutResponseDTO getRandomQuestionByTheme(String themeName) {
+        List<Question> questions = questionRepository.findByThemeNameWithoutResponse(themeName);
         if (questions.isEmpty()) {
             throw new QuestionNotFoundException("Nenhuma QuestionDTO encontrada para o tema: " + themeName);
         }
@@ -96,7 +97,7 @@ public class QuestionService {
         int randomIndex = random.nextInt(questions.size());
         Question randomQuestion = questions.get(randomIndex);
 
-        return questionMapper.toDTO(randomQuestion);
+        return questionMapper.toDTOWithoutResponse(randomQuestion);
     }
 
 }

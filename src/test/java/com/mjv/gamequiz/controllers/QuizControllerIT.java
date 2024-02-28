@@ -40,6 +40,7 @@ public class QuizControllerIT {
     @DisplayName("Deve retornar questão por usuário e tema")
     public void testFindQuestionByUserAndTheme() throws Exception {
         QuestionDTO questionDTO = QuestionFactory.createValidQuestionDTO();
+        final var questionWithOutResponseDTO = QuestionFactory.createValidQuestionWithoutResponseDTO();
         ThemeDTO themeDTO = new ThemeDTO();
         themeDTO.setId(1L);
         questionDTO.setTheme(themeDTO);
@@ -47,7 +48,7 @@ public class QuizControllerIT {
         String theme = "Cinema";
 
         when(userService.userExists(login)).thenReturn(true);
-        when(questionService.getRandomQuestionByTheme(theme)).thenReturn(questionDTO);
+        when(questionService.getRandomQuestionByTheme(theme)).thenReturn(questionWithOutResponseDTO);
 
         mockMvc.perform(MockMvcRequestBuilders.get(String.format("/game-quiz/loginByUser/%s/theme/%s", login, theme))
                         .contentType(MediaType.APPLICATION_JSON))

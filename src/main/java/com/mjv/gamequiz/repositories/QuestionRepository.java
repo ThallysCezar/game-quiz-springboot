@@ -1,6 +1,7 @@
 package com.mjv.gamequiz.repositories;
 
 import com.mjv.gamequiz.domains.Question;
+import com.mjv.gamequiz.dtos.QuestionWithoutResponseDTO;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,5 +22,8 @@ public interface QuestionRepository extends JpaRepository<Question, Long> {
 
     @Query("SELECT q FROM Question q JOIN q.theme t WHERE t.theme LIKE %:themeName%")
     List<Question> findByThemeName(@Param("themeName") String themeName);
+
+    @Query("SELECT q FROM Question q JOIN q.theme t WHERE t.theme LIKE %:themeName%")
+    List<Question> findByThemeNameWithoutResponse(@Param("themeName") String themeName);
 
 }

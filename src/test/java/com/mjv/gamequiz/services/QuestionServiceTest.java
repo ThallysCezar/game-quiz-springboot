@@ -227,7 +227,7 @@ public class QuestionServiceTest {
         Mockito.when(repository.findByThemeName(themeName)).thenReturn(List.of(questionEntity));
         Mockito.when(mapper.toDTO(questionEntity)).thenReturn(questionDTO);
 
-        QuestionDTO retorno = sut.getRandomQuestionByTheme(theme.getTheme());
+        final var retorno = sut.getRandomQuestionByTheme(theme.getTheme());
 
         Assertions.assertEquals(themeName, retorno.getTheme().getTheme());
         Mockito.verify(repository, Mockito.times(1)).findByThemeName(themeName);

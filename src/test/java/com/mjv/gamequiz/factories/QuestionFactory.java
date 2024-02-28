@@ -5,6 +5,7 @@ import com.mjv.gamequiz.domains.Question;
 import com.mjv.gamequiz.domains.Theme;
 import com.mjv.gamequiz.dtos.QuestionChoicesDTO;
 import com.mjv.gamequiz.dtos.QuestionDTO;
+import com.mjv.gamequiz.dtos.QuestionWithoutResponseDTO;
 import com.mjv.gamequiz.dtos.ThemeDTO;
 
 import java.util.ArrayList;
@@ -62,6 +63,28 @@ public class QuestionFactory {
         questionDTO.setAlternativeDTOList(alternativeDTOs);
 
         return questionDTO;
+    }
+
+    public static QuestionWithoutResponseDTO createValidQuestionWithoutResponseDTO() {
+        QuestionWithoutResponseDTO questionWithoutResponseDTO = new QuestionWithoutResponseDTO();
+        final var theme = new ThemeDTO();
+        theme.setTheme("Cinema");
+        questionWithoutResponseDTO.setTheme(theme);
+        questionWithoutResponseDTO.setAnswer("Sample Question");
+        questionWithoutResponseDTO.setResponse("Sample Response");
+
+        List<QuestionChoicesDTO> alternativeDTOs = new ArrayList<>();
+        QuestionChoicesDTO alternativeDTO1 = new QuestionChoicesDTO();
+        alternativeDTO1.setAlternative("Sample QuestionChoices A");
+        alternativeDTOs.add(alternativeDTO1);
+
+        QuestionChoicesDTO alternativeDTO2 = new QuestionChoicesDTO();
+        alternativeDTO2.setAlternative("Sample QuestionChoices B");
+        alternativeDTOs.add(alternativeDTO2);
+
+        questionWithoutResponseDTO.setAlternativeDTOList(alternativeDTOs);
+
+        return questionWithoutResponseDTO;
     }
 
     public static List<QuestionDTO> createQuestionDTOList(int size) {

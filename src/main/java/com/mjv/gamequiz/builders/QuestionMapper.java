@@ -2,6 +2,7 @@ package com.mjv.gamequiz.builders;
 
 import com.mjv.gamequiz.domains.Question;
 import com.mjv.gamequiz.dtos.QuestionDTO;
+import com.mjv.gamequiz.dtos.QuestionWithoutResponseDTO;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
@@ -24,6 +25,13 @@ public class QuestionMapper {
 
     public QuestionDTO toDTO(Question entity) {
         QuestionDTO dto = modelMapper.map(entity, QuestionDTO.class);
+        dto.setAlternativeDTOList(questionChoicesMapper.toListDTO(entity.getAlternativeList()));
+        dto.setTheme(themeMapper.toDTO(entity.getTheme()));
+        return dto;
+    }
+
+    public QuestionWithoutResponseDTO toDTOWithoutResponse(Question entity) {
+        QuestionWithoutResponseDTO dto = modelMapper.map(entity, QuestionWithoutResponseDTO.class);
         dto.setAlternativeDTOList(questionChoicesMapper.toListDTO(entity.getAlternativeList()));
         dto.setTheme(themeMapper.toDTO(entity.getTheme()));
         return dto;
