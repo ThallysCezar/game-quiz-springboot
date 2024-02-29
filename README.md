@@ -7,6 +7,7 @@ Bem-vindo ao GameQuiz! Este é um projeto de quiz de perguntas e respostas desen
 ## Stack utilizada
 
 **Back-end:** Java, Spring Boot, PostgreSQL + DBeaver, JUnit + Mockito para testes unitários, Spring Security + JWT para autenticação, Flyway para migração de banco de dados.
+**Outros:** Monitoramento: Prometheus e Grafana.
 
 
 ## Configuração
@@ -90,58 +91,44 @@ Bem-vindo ao GameQuiz! Este é um projeto de quiz de perguntas e respostas desen
 ```
 ```JSON
   {
-    "theme": "Geografia",
-    "question": "Qual é a capital da França?",
-    "response": "Paris",
-    "correctQuestionAlternativeID": 1,
-    "listaAquestionAlternativeDTOListlternativas": [
+  "theme": {
+    "theme": "Thallys"
+  },
+  "answer": "Answer Teste",
+  "response": "Response Teste",
+  "correctAlternativeID": 97,
+  "alternativeDTOList": [
     {
-      "alternativa": "Berlim",
-      "correta": false
+      "alternative": "A",
+      "content": "Alternative 1 teste"
     },
-    {
-      "alternativa": "Madri",
-      "correta": false
+		{
+      "alternative": "B",
+      "content": "Alternative 2 teste"
     },
-    {
-      "alternativa": "Paris",
-      "correta": true
+		{
+      "alternative": "C",
+      "content": "Alternative 3 teste"
     },
-    {
-      "alternativa": "Roma",
-      "correta": false
-    },
-    {
-      "alternativa": "Luxenburgo",
-      "correta": false
-    },
-    {
-      "alternativa": "Pernambuco",
-      "correta": false
-    },
-    {
-      "alternativa": "California",
-      "correta": false
-    },
-    {
-      "alternativa": "Lugano",
-      "correta": false
+		{
+      "alternative": "D",
+      "content": "Alternative 4 teste"
     }
   ]
 }
 ```
 
-- QuestionAlternativeController
+- QuestionChoicesController
 
 ### Recupera todas as perguntas disponíveis.
 ```http
-  GET /questionsAlternatives
+  GET /question-choices
 ```
 
-### Recupera uma pergunta específica com base no ID fornecido.
+### Recupera uma alternativa específica com base no ID fornecido.
 
 ```http
-  GET /questionsAlternatives/{id}
+  GET /question-choices/{id}
 ```
 
 | Parâmetro   | Tipo       | Descrição                           |
@@ -151,69 +138,68 @@ Bem-vindo ao GameQuiz! Este é um projeto de quiz de perguntas e respostas desen
 ### Recupera uma alternativa de pergunta específica com base no ID fornecido.
 
 ```http
-  GET /questionsAlternatives/question-id/{id}
+  GET /question-choices/question-id/{id}
 ```
 
 | Parâmetro   | Tipo       | Descrição                           |
 | :---------- | :--------- | :---------------------------------- |
 | `id` | `Long` | **Obrigatório**. O id da pergunta para achar a alternativa |
 
-### Recupera a contagem de uma questão baseada no seu tema.
+### Recupera a contagem de uma alternativa baseada no seu tema.
 
 ```http
-  GET /questionsAlternatives/count-by-theme
+  GET /question-choices/count-by-theme
 ```
 
-### Cria uma nova pergunta. JSON exemplo:
+### Cria uma nova alternativa para a pergunta, JSON exemplo:
 
 ```http
-  POST /questionsAlternatives
+  POST /question-choices
 ```
 ```JSON
   {
-    "alternative": "Resposta A",
-    "reference": "Ref A"
+   "alternative": "A",
+    "content": "Conteúdo da alternativa A"
   }
-
 ```
-### Cria uma lista nova de perguntas. JSON exemplo:
+### Cria uma lista nova de alternativas para as perguntas, JSON exemplo:
 
 ```http
-  POST /questionsAlternatives/list
+  POST /question-choices/list
 ```
 ```JSON
   [
     {
       "alternative": "Resposta A",
-      "reference": "Ref A"
+      "content": "Ref A"
     },
     {
       "alternative": "Resposta B",
-      "reference": "Ref B"
+      "content": "Ref B"
     },
     {
       "alternative": "Resposta C",
-      "reference": "Ref C"
+      "content": "Ref C"
     },
     {
       "alternative": "Resposta D",
-      "reference": "Ref D"
+      "content": "Ref D"
     },
     {
       "alternative": "Resposta E",
-      "reference": "Ref E"
+      "content": "Ref E"
     },
     {
       "alternative": "Resposta F",
-      "reference": "Ref F"
+      "content": "Ref F"
     },
     {
       "alternative": "Resposta G",
-      "reference": "Ref G"
+      "content": "Ref G"
     },
     {
       "alternative": "Resposta H",
-      "reference": "Ref H"
+      "content": "Ref H"
     }
 ]
 ```
@@ -393,9 +379,46 @@ Para começar a jogar, siga os passos abaixo:
         ```
 Observação: As questões são geradas aleatoriamente com base no tema escolhido. Caso tenha dificuldades para acessar os endpoints fornecidos, consulte como deve ser usado cada endpoint na documentação da API.
 
+## Monitoramento com Prometheus e Grafana
+
+-  O Prometheus é um sistema de monitoramento e alerta de código aberto que coleta métricas de seus alvos em tempo real. Ele armazena todas as informações em uma base de dados de séries temporais, permitindo consultas flexíveis e alertas detalhados com uma linguagem de consulta poderosa.
+
+- Por outro lado, o Grafana é uma plataforma de análise e monitoramento de métricas multi-fonte e multi-plataforma. Ele permite visualizar e compreender seus dados, seja através de gráficos simples ou painéis altamente detalhados e interativos.
+
+### Como usar o Prometheus e o Grafana:
+1. Instalação e Configuração:
+  - Baixe e instale o Prometheus em [Prometheus Releases](https://prometheus.io/docs/prometheus/latest/getting_started/)
+  - Configure o Prometheus para coletar métricas dos seus serviços. Exemplo de configuração básica:
+```yaml
+scrape_configs:
+  - job_name: "my-service"
+    static_configs:
+      - targets: ["localhost:8080"]
+```
+  - Baixe e instale o Grafana em [Grafana Download](https://grafana.com/docs/grafana/latest/setup-grafana/installation/).
+  - Configure o Grafana para se conectar ao Prometheus como a fonte de dados.
+2. Visualização dos dados:
+  - Acesse o Prometheus em [localhost](http://localhost:9090/) para verificar as métricas coletadas.
+  - Acesse o Grafana em [localhost](http://localhost:3000/) e faça login com as credenciais padrão (usuário: admin, senha: admin).
+  - Adicione o Prometheus como uma fonte de dados no Grafana.
+  - Crie painéis personalizados para visualizar suas métricas de forma intuitiva e eficaz.
+3. Configuração de Alertas:
+  - No Prometheus, configure regras de alerta para monitorar métricas e acionar alertas quando necessário.
+  - No Grafana, crie notificações de alerta com base nos dados do Prometheus.
+
+### Onde usar o Prometheus e o Grafana
+O Prometheus e o Grafana são amplamente utilizados em ambientes de computação em nuvem, contêineres e microsserviços.
+Eles são ideais para monitorar o desempenho de sistemas distribuídos e facilitar a detecção precoce de problemas.
+
 ## Sobre o projeto
 
 Este projeto foi desenvolvido como parte do curso da School MJV de Java. Ele serviu como uma oportunidade para revisar conceitos básicos de Java com Spring Boot, explorando a criação de APIs RESTful, manipulação de banco de dados e interações entre entidades. Se você encontrar problemas ou tiver sugestões de melhoria, sinta-se à vontade para abrir uma issue ou enviar um pull request. Divirta-se explorando e desenvolvendo!
+
+## Screenshots do projeto
+
+![Prometheus](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
+
+![Grafana](https://via.placeholder.com/468x300?text=App+Screenshot+Here)
 
 ## Contribuindo
 
